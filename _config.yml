@@ -80,7 +80,7 @@ theme: nayo
 deploy:
   type: git
   repository: git@github.com:xieyezi/hexo-blog.git
-  branch: master
+  branch: run-page #部署分支
 ### search in blog
 search:
   path: search.xml
