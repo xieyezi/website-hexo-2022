@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Better-Scroll插件初始化后没有效果? |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		better-scroll插件初始化后没有效果?
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		1月 17, 2019
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			2349
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>   最近做开发,用到了一个很著名的Vue插件-<a href="https://ustbhuangyi.github.io/better-scroll/#/" target="_blank" rel="noopener">better-scroll</a>.这个插件主要是用来解移动端各种滚动页面的需求.我在项目中想要一个页面的滚动效果,引入了这个插件之后,按照作者的方法进行了初始化,但是仍然无法实现.经过我不断的谷歌,终于找到了解决的办法.下面我来介绍一下这个插件的具体的用法.<br>   <a id="more"></a></p>
+<h3 id="安装及其引入"><a href="#安装及其引入" class="headerlink" title="安装及其引入"></a>安装及其引入</h3>   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install better-scroll --save</span><br></pre></td></tr></table></figure>
+<p>   在所需组件引入:<br>   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BScroll <span class="keyword">from</span> <span class="string">'better-scroll'</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="插件的理解"><a href="#插件的理解" class="headerlink" title="插件的理解"></a>插件的理解</h3><p>   其实这个插件实现滚动原理很简单.我们先来看一下这个这个插件的html结构:<br>   <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 这里可以放一些其它的 DOM，但不会影响滚动 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>  上面的代码中 better-scroll 是作用在外层 wrapper 容器上的,滚动的部分是 content 元素.意思就是说,content会在wrapper上实现滚动.为什么content就能滚动呢?,我们来看下面一张图片(截自官网):</p>
+<p>  <img src="http://static.galileo.xiaojukeji.com/static/tms/shield/scroll-4.png" alt="Github需求" title="GitHub需求"></p>
+<p>  也就是说,当content的内容的高度超过wapper高度的时候,会出现滚动效果,也就是当我们的视口展示不下内容的时候,会通过滚动条的方式让用户滚动屏幕看到剩余的内容.但是这里要注意的是,better-scroll 只处理容器（wrapper）的第一个子元素（content）的滚动,其它的元素都会被忽略.<br>  比如下面这样的代码:<br>  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"other&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">   &lt;/div&gt;</span></span></span><br><span class="line"><span class="tag"><span class="string">   &lt;ul class="</span><span class="attr">content</span>"&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>  在上面的代码中,在warpper中实现滚动效果是ul吗?当然不是,这里会滚动other.我们来看看源码:</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// this.scroller就是滚动的内容，this.wrapper是容器</span></span><br><span class="line">  <span class="keyword">this</span>.scroller = <span class="keyword">this</span>.wrapper.children[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>  可以看出来,只有warpper的第一个孩子才会实现滚动效果.所以我们应该把需要滚动的内容都放置在一个容器里面,作为warpper的第一个孩子.</p>
+<h3 id="插件的初始化"><a href="#插件的初始化" class="headerlink" title="插件的初始化"></a>插件的初始化</h3><p>  注:这里我只介绍在vue中的情况.<br>  template:<br>  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span> <span class="attr">ref</span>=<span class="string">"wrapper"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>...<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>  js:<br>  我们在methods中封装一个initNormal方法:<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">initNormal()&#123;</span><br><span class="line">   <span class="keyword">if</span> (!<span class="keyword">this</span>.scroll) &#123;</span><br><span class="line">       <span class="keyword">this</span>.scroll = <span class="keyword">new</span> BScroll(<span class="keyword">this</span>.$refs.wrapper, &#123;</span><br><span class="line">           click: <span class="literal">true</span>,</span><br><span class="line">           probeType: <span class="number">3</span></span><br><span class="line">       &#125;);</span><br><span class="line">       <span class="comment">//console.log(this.scroll);</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">this</span>.scroll.refresh();</span><br><span class="line">   &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  那么我们应该在什么时候调用这个方法进行初始化呢?<br>  通常的做法是你的异步请求都完成以后,才进行对better-scroll的初始化.如果不这样做的话,better-scroll无法正确取到content的高度.从而无法实现滚动.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">v.$axios.get(<span class="string">'api/toplist/artist'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">//console.log(response.datalist.artists);</span></span><br><span class="line">      <span class="keyword">if</span> (response.data.code === <span class="number">200</span>) &#123;</span><br><span class="line">          <span class="keyword">this</span>.singerList = response.data.list.artists;</span><br><span class="line">          <span class="comment">//数据加载完成，可以进行初始化了</span></span><br><span class="line">           <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span>&#123;</span><br><span class="line">                 <span class="keyword">this</span>.initNormal();</span><br><span class="line">              &#125;);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>  上面的代码中,调用了<code>$nextTick</code>方法,就是为了确保将bettre-scroll的初始化放置在异步请求完成之后.<br>  接下来还有最重要的一步,我也是卡在这一步.上面我已经说过了,只有wapper的高度小于content高度的时候,才会出现滚动效果,那意味着我们必须给wapper和content设置高度.其实content的高度我们不需要管.因为在初始化的时候,better-scroll会自动将高度计算出.那么我们需要对wapper设置高度,但是问题是,在移动端,用户用手滑动屏幕,我们如何能得知他滑动的高度,从而给warpprt赋值呢?其实很简单,用css样式就可以实现:<br>  <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.wrapper</span>&#123;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">     <span class="attribute">overflow</span>: hidden;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>  然后重新启动项目,就能实现想要的滚动效果.就是这样简单的两行代码,居然困扰我这么久,然而我当时还想着跟随滚动去计算高度,醉了.</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/JS/">JS</a> <a class="tag-link" href="/tags/Vue/">Vue</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2019/01/17/我的2018年总结/" data-hover="我的2018，都做了些什么？">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2018/12/11/利用githubPage+docsify搭建项目文档/" data-hover="利用githubPage+docsify搭建项目文档"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

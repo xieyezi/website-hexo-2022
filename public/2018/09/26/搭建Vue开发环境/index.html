@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Vue开发环境的搭建 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		Vue开发环境的搭建
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		9月 26, 2018
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			1094
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  学了Vue也算是有段时间了,我看了一下自己的博客记录,居然没有一篇写如何搭建Vue开发环境的,于是才有了这篇博文.现在前端的开发更趋向于工程化、模块化,所以使用Vue-Cli是非常必要的.基本来说,要将Vue项目跑起来,要用到以下工具:</p>
+<ul>
+<li>Node.js</li>
+<li>npm</li>
+<li>webpack</li>
+<li>Vue-Cli    <a id="more"></a>
+</li>
+</ul>
+<p>  其中我说一下Vue-Cli.Vue-Cli称为脚手架,其实说白了就是命令行工具,通过这个工具,你可以在命令行初始化工程项目,帮你迅速搭好工程框架.下面来说说到底如何搭建Vue开发环境并运行你的第一个Vue项目吧.</p>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
+<li>安装<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>     </li>
+</ol>
+<p>  到官网去下载相应到版本,然后一路点击下一步迅速安装好</p>
+<ol start="2">
+<li>查看是否安装成功       </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+<p>  如果出现版本号,说明安装成功<br>  注：如果是Mac,记得输入以下命令更改Node.js目录的访问权限<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod -R 777 /usr/local/lib/node_modules/</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>新建工程目录       </li>
+</ol>
+<p>  在你的电脑任何你喜欢的位置新建一个文件夹<br>  启动你的命令行进入你刚刚新建的文件夹目录下</p>
+<ol start="4">
+<li>全局安装npm       </li>
+</ol>
+<p>  能翻墙的同学请打开翻墙执行以下命令进行安装<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g npm</span><br></pre></td></tr></table></figure></p>
+<p>  不能翻墙的同学也没关系,请使用以下命令进行安装<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
+<p>  在这里,我们使用了淘宝镜像进行安装,记住,以后所有以npm开头的命令,不能翻墙的同学都要以cnpm代替</p>
+<ol start="5">
+<li>全局安装webpack       </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+<p>  同学你记住我刚刚说的话没有,如果你不能翻墙,请把上面👆这条命令的npm 换成cnpm</p>
+<ol start="6">
+<li>全局安装Vue-Cli脚手架        </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-cli -g</span><br></pre></td></tr></table></figure>
+<p>  完成了上面的6步,恭喜你,现在可以搭建项目了.</p>
+<ol start="7">
+<li>搭建项目         </li>
+</ol>
+<p>  在你的电脑里面随便一个你喜欢的位置,新建一个文件夹</p>
+<ol start="8">
+<li>打开命令行,进入到你刚刚创建的文件夹目录下         </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack projectName(&quot;项目的名字,不能使用中文哦&quot;)</span><br></pre></td></tr></table></figure>
+<p>  接着会有一些基础的配置信息需要你填,记住,需要你选择(y/n)的,你现在都先选择n.<br>  完成了这一步,你就可以在你刚刚新建的文件夹里面看见新建的项目了.</p>
+<ol start="9">
+<li>安装依赖包         </li>
+</ol>
+<p>  现在利用命令行进入到你的项目文件夹根目录下<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
+<ol start="10">
+<li>跑起来          </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>  Vue一般是走8080端口,打开你的浏览器,进入locallhost://8080,就可以看见你的第一个Vue项目运行起来了.</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/JS/">JS</a> <a class="tag-link" href="/tags/Vue/">Vue</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2018/09/28/Vue组件库iView的使用/" data-hover="Vue组件库iView的使用">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2018/09/24/Gulp的基本使用/" data-hover="gulp的基本使用"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Es6的学习笔记2 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		Es6的学习笔记2
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		10月 26, 2018
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			1702
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="函数的扩展"><a href="#函数的扩展" class="headerlink" title="函数的扩展"></a>函数的扩展</h3><p>   ES6对函数做了很多扩展.</p>
+<h4 id="函数参数的默认值"><a href="#函数参数的默认值" class="headerlink" title="函数参数的默认值"></a>函数参数的默认值</h4><p>   ES6允许为函数的参数设置默认值:<br>   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">point</span> (<span class="params">x = <span class="number">0</span>, y = <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = x;</span><br><span class="line">  <span class="keyword">this</span> y = y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> point();</span><br><span class="line">p&#123;<span class="attr">x</span>: <span class="comment">// 0 , y:  //0&#125;</span></span><br></pre></td></tr></table></figure></p>
+   <a id="more"></a>
+<p>   但是在一般的情况下,定义了默认值的参数应该是函数的尾参数,如果非尾部的参数设置了默认值,实际上这个参数是无法省略的.</p>
+   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x= <span class="number">1</span>,y</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> [x,y];</span><br><span class="line">&#125;</span><br><span class="line">f();  <span class="comment">//[1,undefined]</span></span><br><span class="line">f(<span class="number">2</span>);  <span class="comment">//[2,undefined]</span></span><br><span class="line">f( ,<span class="number">1</span>)  <span class="comment">//报错</span></span><br><span class="line">f(<span class="literal">undefined</span>, <span class="number">1</span>) <span class="comment">//[1,1]</span></span><br></pre></td></tr></table></figure>
+<h4 id="函数参数默认值的作用域"><a href="#函数参数默认值的作用域" class="headerlink" title="函数参数默认值的作用域"></a>函数参数默认值的作用域</h4><p>  一旦设置了参数的默认值,参数会形成一个单独的作用域,等到初始化完成之后,这个作用域才会消失.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">x , y = x</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(y);</span><br><span class="line">&#125;</span><br><span class="line">f(<span class="number">2</span>)  <span class="comment">//2</span></span><br></pre></td></tr></table></figure></p>
+<p>  在这个例子中,y 的默认值设置为等于x,形成了单独的作用域,于是y的值就和全局的x无关,调用f(2)的时候就将x的值赋给y.如图</p>
+<p>  <img src="https://i.loli.net/2018/10/26/5bd2c811037d6.png" alt="寻找终点.png"></p>
+<p>  另一个例子<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> (<span class="params">y = x</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(y);</span><br><span class="line">&#125;</span><br><span class="line">f();  <span class="comment">//1</span></span><br></pre></td></tr></table></figure></p>
+<p>  那么在这个例子中,调用<code>f()</code>时,x初始化为<code>let x = 1</code>,所以形成单独的作用域,<code>y=x=1</code>,与里面的<code>let x = 2</code> 无关.如图</p>
+<p>  <img src="https://i.loli.net/2018/10/26/5bd2c81103cad.png" alt="寻找终点 (1).png"></p>
+<h4 id="rest参数"><a href="#rest参数" class="headerlink" title="rest参数"></a>rest参数</h4><p>  ES6引入了rest参数,形式为(“ <code>...变量名</code> “) ,用于获取函数多余的参数.</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">...values </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> val <span class="keyword">of</span> values) &#123;</span><br><span class="line">    sum += val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">add(<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>);   <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
+<p>  ES6规定只要函数的参数使用了默认值、解构赋值或者扩展运算符,那么函数的内部不允许设定为严格模式.</p>
+<h4 id="函数的name属性"><a href="#函数的name属性" class="headerlink" title="函数的name属性"></a>函数的name属性</h4><p>  name属性会返回该函数的函数名.</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line">f.name  <span class="comment">//"f"</span></span><br></pre></td></tr></table></figure>
+<p>  匿名函数的name属性在ES5和ES6的区别如下:</p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line">f.name  <span class="comment">// " "  ES5</span></span><br><span class="line">f.name  <span class="comment">// "f"  ES6</span></span><br></pre></td></tr></table></figure>
+<h4 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h4><p>  ES6新增了箭头函数,形如<code>(=&gt;)</code>.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="params">v</span> =&gt;</span> v; 等同于</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> (<span class="params">v</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  如果箭头函数不需要参数或者需要多个参数,就使用圆括号代替参数部分.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="params">()</span> =&gt;</span> <span class="number">5</span>; 等同于</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="function">(<span class="params">num1,num2</span>) =&gt;</span> num1+num2;   等同于</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span> (<span class="params">num1,num2</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num1+num2;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>  如果箭头函数的代码块部分多于一条语句,就应该使用大括号将其括起来.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="function">(<span class="params">num1,num2</span>) =&gt;</span> &#123;<span class="keyword">return</span> num1+num2&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>  由于打括号被解释为一个代码块,所以如果箭头函数返回的是一个对象,就必须在对象外面加上括号.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getTempItem =  <span class="function"><span class="params">id</span> =&gt;</span> (&#123;</span><br><span class="line">  id : id,</span><br><span class="line">  name : <span class="string">"temp"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>  rest参数和箭头函数的结合.<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numbers = <span class="function">(<span class="params">...nums</span>) =&gt;</span> nums;</span><br><span class="line">numbers(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>)  <span class="comment">//[1,2,3,4,6]</span></span><br></pre></td></tr></table></figure></p>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> headAndTail = <span class="function">(<span class="params">head,...tail</span>) =&gt;</span> [head,tail];</span><br><span class="line">headAndTail(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);   <span class="comment">//[1,[2,3,4,5]]</span></span><br></pre></td></tr></table></figure>
+<h4 id="箭头函数的注意事项"><a href="#箭头函数的注意事项" class="headerlink" title="箭头函数的注意事项"></a>箭头函数的注意事项</h4><p>  函数体内的<code>this</code>对象就是定义时所在的对象,而不是使用时所在的对象.<code>this</code>对象的指向是可变的,但在箭头函数中它是固定的.</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/Es6/">Es6</a> <a class="tag-link" href="/tags/JS/">JS</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2018/11/06/nginx解决vue生产环境的跨域问题/" data-hover="nginx解决vue项目在生产环境的跨域问题">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2018/10/24/Es6的学习笔记1/" data-hover="Es6的学习笔记1"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon lazyload" src="/images/placeholder.png" data-src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Vue.$nextTick解析 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		Vue.$nextTick解析
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		11月 18, 2018
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			3218
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>这篇博文全是干货,内容很长,但是值得收藏！！！</p>
+<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>   我最近在做一个自己的音乐Web App,期间遇到不少瓶颈,这次记录一下我困扰了将近一周的问题.我在一个组件内点击了播放按键,将这个点击事件派发到父组件,然后传入ID到player组件内,进行异步请求,获取到该首音乐的播放地址,然后通过vue.$ref去调用audio.play()方法,经过调试发现,在谷歌浏览器、火狐浏览器等都能正常播放,但是唯独苹果旗下的safari播放器不能播放.请看代码:<br> <a id="more"></a><br>dom部分：<br>    <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">:src</span>=<span class="string">"songurl"</span> <span class="attr">ref</span>=<span class="string">"audio"</span> @<span class="attr">canplay</span>=<span class="string">"ready"</span> @<span class="attr">error</span>=<span class="string">"error"</span> @<span class="attr">timeupdate</span>=<span class="string">"updateTime"</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这里的”:src=songurl”,我是在data里面初始化了一个’songurl’ :</p>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">data() &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                songurl: <span class="string">''</span>,</span><br><span class="line">                songReady: <span class="literal">false</span>,</span><br><span class="line">                currentTime: <span class="number">0</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+</code></pre><p>watch部分：</p>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">            currentSong() &#123;</span><br><span class="line">                <span class="keyword">var</span> v = <span class="keyword">this</span>;</span><br><span class="line">                v.getSongUrl(v.currentSong.id).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                        v.$refs.audio.play();</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;,</span><br><span class="line">            playing(newPlaying) &#123;</span><br><span class="line">                <span class="keyword">var</span> v = <span class="keyword">this</span>;</span><br><span class="line">                <span class="keyword">const</span> audio = v.$refs.audio;</span><br><span class="line">                v.getSongUrl(v.currentSong.id).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                    newPlaying ? audio.play() : audio.pause();</span><br><span class="line">                &#125;)</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure>
+</code></pre><p>可以看到,我是先去调用了v.getSongUrl( ) 这个方法去获取歌曲URL,这个promise执行完成之后,然后再去播放歌曲.<br>以下为getSongUrl( ) 方法：<br>    <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">getSongUrl(id) &#123;</span><br><span class="line">                <span class="keyword">var</span> v = <span class="keyword">this</span>;</span><br><span class="line">                <span class="keyword">return</span> v.$axios.get(<span class="string">'api/song/url'</span>, &#123;</span><br><span class="line">                    params: &#123;</span><br><span class="line">                        id: id</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (response.data.code === <span class="number">200</span>) &#123;</span><br><span class="line">                        v.songurl = response.data.data[<span class="number">0</span>].url;</span><br><span class="line">                        <span class="comment">//console.log("地址：" + v.songurl);</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(error);</span><br><span class="line">                &#125;);</span><br><span class="line"></span><br><span class="line">            &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>所以就是,我先去异步请求,然后将获取的url赋值给data里面的songurl,然后绑定到audio的src上面,然后再去调用audio.play. 但是safari就是不能播放.</p>
+<h3 id="问题探究"><a href="#问题探究" class="headerlink" title="问题探究"></a>问题探究</h3><p>遇到问题,先进行思考,为什么谷歌浏览器等一众浏览器都能正常播放,唯独safari不能？是不是safari有什么特别之处？于是我去搜索了一番,一查还真是,请看：</p>
+<p><img src="https://i.loli.net/2018/11/18/5bf103da21030.png" alt="QQ20181118-141626@2x.png"></p>
+<p>safari对播放做了限制,除非用户自己进行了交互操作,但是去调用<code>audio.play()</code>,而我在这里,是先进行了异步请求,才去执行了这个<code>audio.play()</code>,所以不能播放.说起来safari还真是尿性,为了防止用户损失流量,就做了这个限制,那有什么办法解决呢？请看：</p>
+<p><img src="https://i.loli.net/2018/11/18/5bf105f1cae71.png" alt="QQ20181118-142537@2x.png"></p>
+<p>意思是说,官方还是没有解除这个限制.这里还说到,Apple 在 iOS 4.2.1 中修复了异步请求之后播放的功能,所以这种变通方法在 iOS 4.2.1 和后续版本中是不起作用的.终于找到问题所在,原来就是不能这样实现.所以我就必须重构自己的业务逻辑,不能在播放之前进行异步请求,于是我将获取歌曲URL的操作放置到另一个组件内,然后利用props传递到player组件里面来,简单来说我将异步请求放到前面去实现了.然而这样就能播放了吗？答案是还是不能!!!我懵逼了,我不是将异步请求放置到前面去实现了吗,为什么还是不能实现？于是我去搜索了一下,原来有一个<code>Vue.$nextTick</code>方法.那么这个方法的作用是什么？请看：<br><img src="https://i.loli.net/2018/11/18/5bf10ec8e657b.png" alt="QQ20181118-150210@2x.png"><br>意思是说,我可能数据还没加载好,就去更新dom了,所以应该将更新dom的操作放置到<code>Vue.$nextTick</code>方法中,这样就可以保证将更新dom的操作放置到异步请求之后去实现了:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">watch: &#123;</span><br><span class="line">           currentSong() &#123;</span><br><span class="line">               <span class="keyword">var</span> v = <span class="keyword">this</span>;</span><br><span class="line">               v.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                   v.$refs.audio.play();</span><br><span class="line">               &#125;);</span><br><span class="line">           &#125;,</span><br><span class="line">           playing(newPlaying) &#123;</span><br><span class="line">               <span class="keyword">var</span> v = <span class="keyword">this</span>;</span><br><span class="line">               <span class="keyword">const</span> audio = v.$refs.audio;</span><br><span class="line">               v.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                   newPlaying ? audio.play() : audio.pause();</span><br><span class="line">               &#125;);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>然而这样做之后就能播放了吗？答案是还是不能！！为什么呢？</p>
+<h3 id="继续探究"><a href="#继续探究" class="headerlink" title="继续探究"></a>继续探究</h3><p>那为什么加了<code>Vue.$nextTick</code>方法还是无法实现播放?我们应该去研究研究Vue的这个方法,但是在这之前,我们先来看看JS的运行机制:<br>来自阮一峰的<a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">一篇文章</a>,大致分为以下几个步骤:</p>
+<ol>
+<li>所有同步任务都在主线程上执行,形成一个执行栈（execution context stack）.</li>
+<li>主线程之外,还存在一个”任务队列”（task queue）.只要异步任务有了运行结果,就在”任务队列”之中放置一个事件.</li>
+<li>一旦”执行栈”中的所有同步任务执行完毕,系统就会读取”任务队列”,看看里面有哪些事件.那些对应的异步任务,于是结束等待状态,进入执行栈,开始执行.</li>
+<li>主线程不断重复上面的第三步.           </li>
+</ol>
+<p> 主线程的执行过程就是一个 <code>tick</code>,而所有的异步结果都是通过 “任务队列” 来调度被调度. 消息队列中存放的是一个个的任务（task）. 规范中规定 task 分为两大类,分别是 <code>macro task</code> 和 <code>micro task</code>.在浏览器环境中,常见的 <code>macro task</code> 有 <code>setTimeout</code>、<code>MessageChannel</code>、<code>postMessage</code>、<code>setImmediate</code>；常见的 <code>micro task</code> 有 <code>MutationObsever</code> 和 <code>Promise.then</code>.</p>
+<p> 回到Vue的<code>nextTick</code>,先生介绍一下这个方法的使用场景:<br> vue将异步调用的方法其实是push到一个队列里面,然后内部调用一次nextTick,统一去更新dom,所以数据到DOM数据的变化要下一个tick才能完成.<br> 在2.5以上的版本中,它调度的优先顺序为:<br> <code>setImmediate</code> -&gt; <code>MessageChannel</code> -&gt; <code>setTimeout</code></p>
+<h3 id="对-audio-播放的影响"><a href="#对-audio-播放的影响" class="headerlink" title="对 audio 播放的影响"></a>对 audio 播放的影响</h3><p>知道了调度顺序之后,那到底nextTick是如何影响adio的？经过我的测试,是<code>MessageChannel</code>影响了audio的播放.就是因为在2.5版本以上,<code>nextTick</code>优先使用<code>MessageChannel</code>,造成了audio不能播放.</p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>知道了什么原因,我们就可以解决问题了,那我们在这里跳过<code>MessageChannel</code>,不就行了吗.我直接将全局的<code>MessageChannel</code>禁用掉:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">noop</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.MessageChannel = noop</span><br><span class="line"><span class="built_in">window</span>.setImmediate = noop</span><br></pre></td></tr></table></figure></p>
+<p>这样就跳过了MessageChannel,我再运行项目跑了一下,完美解决!!</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/JS/">JS</a> <a class="tag-link" href="/tags/vue/">vue</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate2.png">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2018/12/11/利用githubPage+docsify搭建项目文档/" data-hover="利用githubPage+docsify搭建项目文档">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2018/11/15/promise的连续调用问题/" data-hover="promise连续调用的问题"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon lazyload" src="/images/placeholder.png" data-src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

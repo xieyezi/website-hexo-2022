@@ -1,0 +1,652 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          
+
+
+
+
+<div class="profile sildeUpMin">
+	
+		<a href="/">
+			<img class="avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+		</a>
+		<p class="author">写夜子</p>
+		
+		<div class="social">
+   		      		
+			<a target="_blank" class="social-links" href="https://github.com/xieyezi">		
+				<i class="iconfont icon-Github"></i>
+			</a>	
+	          		
+			<a target="_blank" class="social-links" href="https://weibo.com/2301190503/profile?rightmod=1&wvr=6&mod=personinfo">		
+				<i class="iconfont icon-Weibo"></i>
+			</a>	
+	          		
+			<a target="_blank" class="social-links" href="https://www.facebook.com/profile.php?id=100022240804629">		
+				<i class="iconfont icon-Facebook"></i>
+			</a>	
+	          		
+			<a target="_blank" class="social-links" href="https://twitter.com/xieyezi">		
+				<i class="iconfont icon-Twitter"></i>
+			</a>	
+	          		
+			<a target="_blank" class="social-links" href="https://www.instagram.com/_xieyezi_/">		
+				<i class="iconfont icon-Instagram"></i>
+			</a>	
+	    
+    	</div>		
+</div>
+
+
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/11/15/promise的连续调用问题/">promise连续调用的问题</a>
+
+		 
+
+		<div class="article-meta">
+			<time>11月 15, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/vue/">vue</a>
+				
+						<a class="article-tag" href="/tags/ES6/">ES6</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="问题的背景"><a href="#问题的背景" class="headerlink" title="问题的背景"></a>问题的背景</h3><p>  最近在做自己的项目的时候,遇到了一个问题.我在组件里面监听了一个对象的变化.一旦发生变化.先通过这个对象的ID去进行异步请求.获取到一个属性:URL(播放地址).然后将这个属性绑定到audio的src属性上.然后再去利用this.$refs获取dom调用radio.play方法.<br>
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/11/15/promise的连续调用问题/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/11/06/nginx给tomcat配置反向代理/">nginx给tomcat配置反向代理</a>
+
+		 
+
+		<div class="article-meta">
+			<time>11月 06, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>   可以利用nginx作为分发服务器,给tomcat下面的项目做代理.</p>
+<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><p>  在nginx根目录下面的conf文件夹下,打开nginx.conf进行编辑(在http内添加如下内容):<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 设置tomcat代理</span><br><span class="line"> upstream tomcat &#123;</span><br><span class="line">       server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8080</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> server &#123;</span><br><span class="line">     listen <span class="number">80</span>;</span><br><span class="line">     server_name www.xieyezi.com;</span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_set_header        Host $host;</span><br><span class="line">         proxy_set_header        X-Real-IP $remote_addr;</span><br><span class="line">         proxy_pass http:<span class="comment">//tomcat;</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/11/06/nginx给tomcat配置反向代理/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/11/06/nginx解决vue生产环境的跨域问题/">nginx解决vue项目在生产环境的跨域问题</a>
+
+		 
+
+		<div class="article-meta">
+			<time>11月 06, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="问题由来"><a href="#问题由来" class="headerlink" title="问题由来"></a>问题由来</h3><p>   我最近做项目,我在前端使用了vue开发,使用vue-cli3搭建项目,在开发的过程中,在开发环境中遇到了跨域的问题,我在vue.config.js配置了proxy,然后解决了问题.但是项目总归要上线,我运行了<code>npm run build</code>之后生成了dist文件夹.由于我的服务器容器是tomcat,所以刚开始我在tomcat的webapps文件夹下面新建了一个项目名vuemusic,然后将dist文件夹下面的所有东西拷贝至webapps下面,然后去conf文件夹配置了server.xml,然后我很开心的打开浏览器,输入地址<code>www.xieyezi.com/vuemusic</code>进行访问,这个时候出现一个问题,请求不到后端数据.<br>
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/11/06/nginx解决vue生产环境的跨域问题/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/10/26/Es6的学习笔记2/">Es6的学习笔记2</a>
+
+		 
+
+		<div class="article-meta">
+			<time>10月 26, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/Es6/">Es6</a>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="函数的扩展"><a href="#函数的扩展" class="headerlink" title="函数的扩展"></a>函数的扩展</h3><p>   ES6对函数做了很多扩展.</p>
+<h4 id="函数参数的默认值"><a href="#函数参数的默认值" class="headerlink" title="函数参数的默认值"></a>函数参数的默认值</h4><p>   ES6允许为函数的参数设置默认值:<br>   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">point</span> (<span class="params">x = <span class="number">0</span>, y = <span class="number">0</span></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = x;</span><br><span class="line">  <span class="keyword">this</span> y = y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> point();</span><br><span class="line">p&#123;<span class="attr">x</span>: <span class="comment">// 0 , y:  //0&#125;</span></span><br></pre></td></tr></table></figure></p>
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/10/26/Es6的学习笔记2/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/10/24/Es6的学习笔记1/">Es6的学习笔记1</a>
+
+		 
+
+		<div class="article-meta">
+			<time>10月 24, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/vue/">vue</a>
+				
+						<a class="article-tag" href="/tags/nginx/">nginx</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="学习ES6的必要性"><a href="#学习ES6的必要性" class="headerlink" title="学习ES6的必要性"></a>学习ES6的必要性</h3><p>   前端的发展越来越快,因为其强大的扩展性、跨平台性,所以Es6标准就出来了.近来我一直在学习Es6,把这些笔记都记录下来.</p>
+<h4 id="let命令"><a href="#let命令" class="headerlink" title="let命令"></a>let命令</h4><ul>
+<li>let命令用来初始化变量,但是所声明的变量只在所属代码块有效.</li>
+<li>不存在变量的提升(变量在声明之前使用，值为undefined).
+		
+	</li></ul></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/10/24/Es6的学习笔记1/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/10/11/Vue Cli3.0请求本地模拟数据/">Vue-cli 3.0请求本地模拟数据</a>
+
+		 
+
+		<div class="article-meta">
+			<time>10月 11, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="升级的前后"><a href="#升级的前后" class="headerlink" title="升级的前后"></a>升级的前后</h3><p>  很多时候,我们在一个项目的开发阶段,需要用到本地的模拟数据.在3.0以前的版本,在项目的根目录下有一个webpack.dev.conf.js文件可以提供给开发者进行配置,但是现在升级之后,3.0的版本目录结构比以前精简很多,没有了这个文件,那么在这个版本我们怎么请求本地的模拟数据呢？<br>
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/10/11/Vue Cli3.0请求本地模拟数据/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/10/08/Vue-cli 3.0解决跨域问题/">Vue-cli 3.0解决跨域问题</a>
+
+		 
+
+		<div class="article-meta">
+			<time>10月 08, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="为什么要跨域？"><a href="#为什么要跨域？" class="headerlink" title="为什么要跨域？"></a>为什么要跨域？</h3><p>  Vue.js真的是一个很好的前端框架.它很好地实现了前后端分离.但是在前后端分离的项目中,一般都会涉及到跨域请求的问题,那么什么是跨域？跨域指浏览器不允许当前页面所在的源去请求另一个源的数据.源指的是协议、端口、域名.只要这3个中有一个不同的就是跨域.
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/10/08/Vue-cli 3.0解决跨域问题/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/10/03/Tomcat的配置域名访问/">Tomcat配置域名访问</a>
+
+		 
+
+		<div class="article-meta">
+			<time>10月 03, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/Tomcat/">Tomcat</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="Tomcat基本配置"><a href="#Tomcat基本配置" class="headerlink" title="Tomcat基本配置"></a>Tomcat基本配置</h3><p>  我们在构建一个网站的时候,常常选择Tomcat作为服务器的工程项目容器.所以我们需要将域名配置到Tomcat上,也就是说我们可以通过域名直接访问我们的网站.<br>
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/10/03/Tomcat的配置域名访问/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/09/28/css超出部分显示省略号/">css超出部分显示省略号</a>
+
+		 
+
+		<div class="article-meta">
+			<time>9月 28, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/CSS/">CSS</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="超出部分显示为省略号"><a href="#超出部分显示为省略号" class="headerlink" title="超出部分显示为省略号"></a>超出部分显示为省略号</h3><p>  我们经常遇见要展示一行或者多行内容，超出部分会让我们的页面变得很难看，所以我们需要设置一下超出部分显示省略号。</p>
+<ul>
+<li>内容为一行   </li>
+</ul>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">overflow: hidden;//把超出的内容进行隐藏</span><br><span class="line"><span class="selector-tag">text-overflow</span><span class="selector-pseudo">:ellipsis</span>;设置超出内容为省略号</span><br><span class="line">white-space: nowrap;//设置内容不换行</span><br></pre></td></tr></table></figure>
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/09/28/css超出部分显示省略号/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2018/09/28/前端知识小记/">前端知识小记</a>
+
+		 
+
+		<div class="article-meta">
+			<time>9月 28, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+						<a class="article-tag" href="/tags/CSS/">CSS</a>
+				
+						<a class="article-tag" href="/tags/HTML/">HTML</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  最近接手了公司的一个项目,因为刚来公司,所以对公司的业务内容不够熟悉,做起来实在是很累.其实说白了就是自己的功力不够.很多不了解我的人都认为我很厉害,其实我什么都不会(emmmm).所以才应该从现在开始才应该多多积累,有什么小的东西就应该记录下来.有一句话说得很不错：每一天的小努力*365=巨大的飞跃！<br>
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/09/28/前端知识小记/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+
+
+
+ 
+   <nav class="paginator">
+    
+        <a class="prev" href="/"> 
+        <i class="iconfont icon-left"></i>
+        上一页
+        </a>
+    
+
+   <span class="page-number"> Page <strong>2</strong>. </span>
+
+    
+        <a class="next" href="/page/3/"> 
+        下一页
+        <i class="iconfont icon-right"></i>
+        </a>
+    
+  </nav> 
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

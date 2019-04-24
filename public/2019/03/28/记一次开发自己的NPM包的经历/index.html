@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  记一次自己封装NPM包的经历 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		记一次自己封装NPM包的经历
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		3月 28, 2019
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			6136
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>最近一直在忙自己的毕业设计,在做的过程中,有的地方要用到缓存.我采用了localStorage和sessionStorage的方式进行的缓存,并完整地实现了自己想要的功能.但是我突然想到前端的”模块化开发”,这块完全可以独立出来,将其封装为一个统一的API,想要使用的时候就引入使用,于是我将其封装为了一个将localStorage和sessionStorage统一在一起的功能函数:<code>xieyezi-storage.js</code>.我存放在自己的电脑里面,以便我自己以后使用,但是我突然想到了程序员的”开源精神”😹,好吧其实是想到,每次我们需要安装一个包的时候,我们都是采用<code>npm install xxx</code>的方式进行引入,然后在使用的时候,就通过<code>import xxx from xxx</code> 这样的方式进行使用.于是我也想要将我的功能函数封装为一个npm包,并且发布到<a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>👆上面去,那也算是为我们开源作出了一定的贡献.<a id="more"></a></p>
+<h3 id="说得简单-动手困难"><a href="#说得简单-动手困难" class="headerlink" title="说得简单,动手困难"></a>说得简单,动手困难</h3><p>世界上很多事情都是说起来容易,做起来比较难,并且,万事开头难.我发现我自己缺乏这方面的很多知识,于是我开始了边学边写的模式.<br>在前期的考察中,我看了许多的npm包的源码,他们都有差不多类似的目录结构,于是我依葫芦画瓢,构建了如下的目录结构:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line"> ├── ./dist</span><br><span class="line"> └── ./src</span><br><span class="line">     └── ./src/index.js</span><br></pre></td></tr></table></figure>
+<p>我执行了一下npm 的初始化工程命令：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+<p>目录变成了这样:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── ./dist</span><br><span class="line">├── ./package.json</span><br><span class="line">└── ./src</span><br><span class="line">    └── ./src/index.js</span><br></pre></td></tr></table></figure>
+<p>原来初始化包都会有一个package.json,这个文件包含了这个包的入口及其信息<br>在src目录下面存放功能代码<code>index.js</code>,dist目录下面则存放打包后的文件<code>xieyezi-storage.js</code><br>一切都已经准备就绪,我开始寻找一个打包工具.</p>
+<h3 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h3><p>在众多的打包工具中,我第一个想到的打包工具就是webpack,于是先安装(在根目录):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i webpack webpack-cli --save-dev</span><br></pre></td></tr></table></figure>
+<p>然后靠着自己对webpack的浅薄知识,含泪写下了配置文件(webpack.config.js):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">entry: <span class="string">'./src/index.js'</span>,</span><br><span class="line">output: &#123;</span><br><span class="line">    filename: <span class="string">'xieyezi-storage.js'</span>,</span><br><span class="line">    publicPath: <span class="string">'/dist/'</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>于是打包之后,生成了<code>xieyezi-storage.js</code>的文件,于是我将此文件复制到我的项目目录里面进行引入使用:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> storage <span class="keyword">from</span> <span class="string">'common/js/xieyezi-storage'</span></span><br></pre></td></tr></table></figure></p>
+<p>结果是我成功地引入了文件并进行了使用.但是我这是ES6规范,并不能支持commonJS模式,说到这个,有如下标准:</p>
+<ul>
+<li>amd – 异步模块定义,用于像RequireJS这样的模块加载器</li>
+<li>cjs – CommonJS,适用于 Node 和 Browserify/Webpack 例如<code>require(&#39;xieyezi-storage&#39;)</code></li>
+<li>es – 将软件包保存为ES模块文件 例如 <code>import storage from &#39;xieyezi-storage&#39;</code>.</li>
+<li>iife – 一个自动执行的功能,适合作为<code>&lt;script&gt;</code>标签.（如果要为应用程序创建一个捆绑包,您可能想要使用它,因为它会使文件大小变小.）</li>
+<li>umd – 通用模块定义,以amd,cjs 和 iife 为一体,umd是amd和CommonJS的糅合,umd先判断是否支持Node.js的模块（exports）是否存在,存在则使用Node.js模块模式.</li>
+</ul>
+<p>所以我打包的文件无法通过commonJS方式来引入.</p>
+<h3 id="libraryTarget"><a href="#libraryTarget" class="headerlink" title="libraryTarget"></a>libraryTarget</h3><p>libraryTarget就是问题的关键,通过设置该属性,这是可以控制 library 如何以不同方式暴露的选项.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">entry: <span class="string">'./src/index.js'</span>,</span><br><span class="line">output: &#123;</span><br><span class="line">    filename: <span class="string">'xieyezi-storage.js'</span>,</span><br><span class="line">    publicPath: <span class="string">'/dist/'</span>,</span><br><span class="line">    libraryTarget: <span class="string">'umd'</span></span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这样子,我们打包的文件就会支持各种规范了.这样子我以为就算完了,但是事实并非如此.我看了一下,打包之后的文件大小居然有2k.这么大？？</p>
+<h3 id="rollup"><a href="#rollup" class="headerlink" title="rollup"></a>rollup</h3><p>在前面的考察中,我在选择打包工具的时候,我看见了Vue框架和React用的是什么打包工具,结果我发现,居然他们两都不是用的webpack,而是用的是一个叫做 <code>rollup</code> 的东西.于是我去查阅了rollup的官网:</p>
+<blockquote>
+<p>Rollup 是一个 JavaScript 模块打包器,可以将小块代码编译成大块复杂的代码,例如 library 或应用程序.Rollup 对代码模块使用新的标准化格式,这些标准都包含在 JavaScript 的 ES6 版本中,而不是以前的特殊解决方案,如 CommonJS 和 AMD.ES6 模块可以使你自由、无缝地使用你最喜爱的 library 中那些最有用独立函数,而你的项目不必携带其他未使用的代码.</p>
+</blockquote>
+<p>所以说,rollup就是专门用来打包library的,而webpack大多是用来打包应用程序的.</p>
+<p>于是我愉快的开始了rollup的学习使用:<br>先安装:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --global rollup</span><br></pre></td></tr></table></figure>
+<p>在项目根目录新建一个rollup.config.js:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    input: <span class="string">'./src/index.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">'./dist/xieyezi-storage.js'</span>,</span><br><span class="line">        format: <span class="string">'umd'</span>,</span><br><span class="line">        name:<span class="string">'xieyezi-storage'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后就是执行 <code>rollup c</code> ,成功打包.而且经过我的测试,能正常引入使用.我一看,才1k😂,开心的笑了.<br>然后我就打算用我们的<code>uglify</code>进行代码压缩:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i rollup-plugin-uglify -D</span><br></pre></td></tr></table></figure></p>
+<p>在rollup.config.js配置引入:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; uglify &#125; <span class="keyword">from</span> <span class="string">'rollup-plugin-uglify'</span>;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    input: <span class="string">'./src/index.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">'./dist/xieyezi-storage.js'</span>,</span><br><span class="line">        format: <span class="string">'umd'</span>,</span><br><span class="line">        name:<span class="string">'xieyezi-storage'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        uglify()</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>然后重新运行 <code>rollup c</code> 进行打包,结果直接报错</p>
+<p><img src="https://i.loli.net/2019/03/28/5c9c69facbebb.jpg" alt="IMG_0665.JPG"></p>
+<p>我上去就是一顿谷歌加百度,原来uglify插件只支持es5的压缩.看来我只能另寻出路.我看见了 <code>terser</code> 这个插件,这个插件也能对代码进行压缩,支持es6.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i rollup-plugin-terser -D</span><br></pre></td></tr></table></figure></p>
+<p>在rollup.config.js配置引入:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; terser &#125; <span class="keyword">from</span> <span class="string">'rollup-plugin-terser'</span>;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    input: <span class="string">'./src/index.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">'./dist/xieyezi-storage.js'</span>,</span><br><span class="line">        format: <span class="string">'umd'</span>,</span><br><span class="line">        name:<span class="string">'xieyezi-storage'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        terser()</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>再次进行打包,成功打包！！！可是我们打包之后对代码只支持es6,我们还需要用 <code>babel</code> 进行转义:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//package.json</span></span><br><span class="line"><span class="string">"devDependencies"</span>: &#123;</span><br><span class="line"><span class="string">"babel-core"</span>: <span class="string">"^6.9.1"</span>,</span><br><span class="line"><span class="string">"babel-loader"</span>: <span class="string">"^6.2.4"</span>,</span><br><span class="line"><span class="string">"babel-plugin-add-module-exports"</span>: <span class="string">"^0.2.1"</span>,</span><br><span class="line"><span class="string">"babel-plugin-transform-es2015-modules-umd"</span>: <span class="string">"^6.12.0"</span>,</span><br><span class="line"><span class="string">"babel-plugin-transform-object-assign"</span>: <span class="string">"^6.22.0"</span>,</span><br><span class="line"><span class="string">"babel-plugin-transform-runtime"</span>: <span class="string">"^6.9.0"</span>,</span><br><span class="line"><span class="string">"babel-polyfill"</span>: <span class="string">"^6.22.0"</span>,</span><br><span class="line"><span class="string">"babel-preset-env"</span>: <span class="string">"^1.5.1"</span>,</span><br><span class="line"><span class="string">"babel-preset-es2015"</span>: <span class="string">"^6.9.0"</span>,</span><br><span class="line"><span class="string">"babel-preset-stage-2"</span>: <span class="string">"^6.5.0"</span>,</span><br><span class="line"><span class="string">"rollup-plugin-babel"</span>: <span class="string">"^3.0.7"</span>,</span><br><span class="line"><span class="string">"rollup-plugin-terser"</span>: <span class="string">"^4.0.4"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再进行<code>npm install</code><br>这里要注意,要使用babel,在rollup里面,必须安装完它所需对依赖,不能只安装 <code>rollup-plugin-babel</code>.必须安装完所有babel所需依赖.</p>
+<p>完整的rollup.config.js:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; terser &#125; <span class="keyword">from</span> <span class="string">'rollup-plugin-terser'</span>;</span><br><span class="line"><span class="keyword">import</span> babel <span class="keyword">from</span> <span class="string">'rollup-plugin-babel'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    input: <span class="string">'./src/index.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        file: <span class="string">'./dist/xieyezi-storage.js'</span>,</span><br><span class="line">        format: <span class="string">'umd'</span>,</span><br><span class="line">        name:<span class="string">'xieyezi-storage'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        babel(&#123;</span><br><span class="line">            exclude: <span class="string">'node_modules/**'</span></span><br><span class="line">        &#125;),</span><br><span class="line">        terser()</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>在项目根目录新建.babelrc:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [</span><br><span class="line">        [</span><br><span class="line">            &quot;env&quot;,</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;modules&quot;: false</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">    &quot;plugins&quot;: [</span><br><span class="line">        &quot;transform-object-assign&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行打包,打包成功<br>完整的package.json:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"name"</span>: <span class="string">"xieyezi-storage"</span>,</span><br><span class="line"><span class="attr">"version"</span>: <span class="string">"1.0.4"</span>,</span><br><span class="line"><span class="attr">"description"</span>: <span class="string">"a package that encapsulates localStorage and sessionStorage"</span>,</span><br><span class="line"><span class="attr">"main"</span>: <span class="string">"dist/xieyezi-storage.js"</span>,</span><br><span class="line"><span class="attr">"module"</span>: <span class="string">"dist/xieyezi-storage.esm.js"</span>,</span><br><span class="line"><span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">"keywords"</span>: [</span><br><span class="line">    <span class="string">"web"</span>,</span><br><span class="line">    <span class="string">"localStorage"</span>,</span><br><span class="line">    <span class="string">"sessionStorage"</span></span><br><span class="line">],</span><br><span class="line"><span class="attr">"author"</span>: <span class="string">"xieyezi"</span>,</span><br><span class="line"><span class="attr">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line"><span class="attr">"git"</span>:&#123;</span><br><span class="line">    <span class="attr">"url"</span>:<span class="string">"https://github.com/xieyezi/webStorage"</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"babel-core"</span>: <span class="string">"^6.9.1"</span>,</span><br><span class="line">    <span class="attr">"babel-loader"</span>: <span class="string">"^6.2.4"</span>,</span><br><span class="line">    <span class="attr">"babel-plugin-add-module-exports"</span>: <span class="string">"^0.2.1"</span>,</span><br><span class="line">    <span class="attr">"babel-plugin-transform-es2015-modules-umd"</span>: <span class="string">"^6.12.0"</span>,</span><br><span class="line">    <span class="attr">"babel-plugin-transform-object-assign"</span>: <span class="string">"^6.22.0"</span>,</span><br><span class="line">    <span class="attr">"babel-plugin-transform-runtime"</span>: <span class="string">"^6.9.0"</span>,</span><br><span class="line">    <span class="attr">"babel-polyfill"</span>: <span class="string">"^6.22.0"</span>,</span><br><span class="line">    <span class="attr">"babel-preset-env"</span>: <span class="string">"^1.5.1"</span>,</span><br><span class="line">    <span class="attr">"babel-preset-es2015"</span>: <span class="string">"^6.9.0"</span>,</span><br><span class="line">    <span class="attr">"babel-preset-stage-2"</span>: <span class="string">"^6.5.0"</span>,</span><br><span class="line">    <span class="attr">"rollup-plugin-babel"</span>: <span class="string">"^3.0.7"</span>,</span><br><span class="line">    <span class="attr">"rollup-plugin-terser"</span>: <span class="string">"^4.0.4"</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后的项目结构如下:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── ./README.md</span><br><span class="line">├── ./dist</span><br><span class="line">│   ├── ./dist/xieyezi-storage.esm.js</span><br><span class="line">│   └── ./dist/xieyezi-storage.js</span><br><span class="line">├── ./package-lock.json</span><br><span class="line">├── ./package.json</span><br><span class="line">├── ./rollup.config.js</span><br><span class="line">├── ./babelrc</span><br><span class="line">└── ./src</span><br><span class="line">    └── ./src/index.js</span><br></pre></td></tr></table></figure></p>
+<p>我按照 <code>es</code> 和 <code>umd</code> 打包了两次.</p>
+<h3 id="将包上传至npm"><a href="#将包上传至npm" class="headerlink" title="将包上传至npm"></a>将包上传至npm</h3><p>先去npm注册一个账号,然后进入到根目录进行登录:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ npm login</span><br><span class="line">Username: xieyezi</span><br><span class="line">Password: </span><br><span class="line">Email: (this IS public) 1435398529@qq.com</span><br><span class="line">Logged in as xieyezi on https://registry.npmjs.org/.</span><br></pre></td></tr></table></figure></p>
+<p>注:输入密码的时候不会显示,只要最后显示Logged in as your nickName即可.<br>然后输入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm publish</span><br></pre></td></tr></table></figure></p>
+<p>它会提示你成功发布,并会给你发邮件.<br>进入到npm官网进行搜索我们发布的包,如果成功搜索到,则发布成功:<br><img src="https://i.loli.net/2019/03/28/5c9c7d748441f.png" alt="QQ20190328-155257@2x.png"></p>
+<p>好了,接下来,进入到我自己的毕业设计的根目录:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install xieyzi-storage</span><br></pre></td></tr></table></figure></p>
+<p>在node_moudules里面查找 <code>xieyezi-storage</code> :<br><img src="https://i.loli.net/2019/03/28/5c9c7e592c74c.png" alt="QQ20190328-155537@2x.png"><br>成功找到,引入项目,成功地进行了引入✌️</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>完成上面的这些工作,我花了前前后后差不多5天的时间,前期主要是在学习,后面才开始动手做.做的过程中遇到了很多 <code>error</code> 和 <code>bug</code> ,但是都是慢慢的解决了困难.我觉得最大的收获就是:很多时候,不是我们不会,只是我们不愿意主动去做而已.所以朋友吧,遇到自己不会的东西,撸起袖子就是干吧！！</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/localStorage/">localStorage</a> <a class="tag-link" href="/tags/npm/">npm</a> <a class="tag-link" href="/tags/rollup/">rollup</a> <a class="tag-link" href="/tags/sessionStorage/">sessionStorage</a> <a class="tag-link" href="/tags/webpack/">webpack</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate2.png">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2019/04/20/Vue多个组件映射到同一个组件,页面不刷新？/" data-hover="Vue多个组件映射到同一个组件,页面不刷新？">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2019/03/26/将本地项目同步至github/" data-hover="将本地项目同步至github"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon lazyload" src="/images/placeholder.png" data-src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Vue组件库iView的使用 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		Vue组件库iView的使用
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		9月 28, 2018
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			1241
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  最近接手了公司的一个项目,因为刚来公司,所以对公司的业务内容不够熟悉,做起来实在是很累.其实说白了就是自己的功力不够.很多不了解我的人都认为我很厉害,其实我什么都不会(emmmm).所以才应该从现在开始才应该多多积累,有什么小的东西就应该记录下来.有一句话说得很不错：每一天的小努力*365=巨大的飞跃！<br>  <a id="more"></a></p>
+<h3 id="css如何设置div滚动显示？"><a href="#css如何设置div滚动显示？" class="headerlink" title="css如何设置div滚动显示？"></a>css如何设置div滚动显示？</h3>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">min-height:250px;</span><br><span class="line">overflow-y:auto;</span><br><span class="line">max-height:300px;</span><br></pre></td></tr></table></figure>
+<p>  例如<br>  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"滚动显示的区域"</span> <span class="attr">style</span>=<span class="string">"min-height:250px;overflow-y:auto;max-height:300px;"</span>&gt;</span></span><br><span class="line">    😂😂😂</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>  上面的例子很简单,其实最主要的属性设置是”overflow-y:auto”,其余两条css样式其实就是设置了子div的高度,如果只设置这一条属性的话,滚动的区域就是父div的g高度,意思是,一旦你滑动屏幕,超出了父div的高度,你的子div就会出现滚动条,从而实现滚动显示.</p>
+<h3 id="Vue组件库iView的使用"><a href="#Vue组件库iView的使用" class="headerlink" title="Vue组件库iView的使用"></a>Vue组件库iView的使用</h3><p>   同学们,我个人强烈安利这个组件库,按照官网的说法来说,<a href="https://www.iviewui.com/docs/guide/introduce" target="_blank" rel="noopener">iView</a> 是一套基于 Vue.js 的开源 UI 组件库,主要服务于 PC 界面的中后台产品.可能熟悉Vue的朋友们都知道饿了么组件库（<a href="http://element-cn.eleme.io/#/zh-CN" target="_blank" rel="noopener">Element</a>）,其实就我来看,其实饿了么组件库相对于iView过于繁琐,为什么这么说呢？因为饿了么总是会写很多内联样式,这对于我们后期的维护和优化来说简直是个巨大的工程,无异于重写界面;其次,要知道,Vue的核心思想就是组件化,一个单页面应该具有独立的样式,饿了么这样的做法简直天理难容😂.而iView组件库则很好的优化了这一方面,而且这个组件库更加Vue.（ps：我曾经听过一个笑话,说A同学帮B同学看代码,最后得出了结论,A同学认为B同学写的代码一点也不Vue…..）.另外,因为它比较方便,所以对开发者的要求变高了,要想基本使用,需要基本了解以下知识：</p>
+<ul>
+<li>Vue组件</li>
+<li>单文件组件</li>
+<li>props 传递数据</li>
+<li>slot 内容分发</li>
+<li>events $emit @click 事件      </li>
+</ul>
+<p>   我也只是初步学习阶段,说了这么多,我来简单说一下,这个组件库的用法.</p>
+<ol>
+<li>安装         </li>
+</ol>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install iview --save</span><br></pre></td></tr></table></figure>
+<p>   不知道同学们至今为止,有没有把node、npm、webpack、Vue-cli安装好,如果没有,那赶紧去！</p>
+<ol start="2">
+<li>引用      </li>
+</ol>
+<p>   在项目的入口文件main.js下<br>   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> iView <span class="keyword">from</span> <span class="string">'iview'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'iview/dist/styles/iview.css'</span>;</span><br><span class="line">Vue.use(iView);</span><br></pre></td></tr></table></figure></p>
+<p>   然后其组件的使用自己去看官方文档</p>
+<h3 id="说在最后"><a href="#说在最后" class="headerlink" title="说在最后"></a>说在最后</h3><p>  现在是北京时间9月28日凌晨00:20,在乏累中写完这篇文章,和大家分享学习.祝大家晚安,明天又将是精彩的一天!</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/CSS/">CSS</a> <a class="tag-link" href="/tags/HTML/">HTML</a> <a class="tag-link" href="/tags/Vue/">Vue</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+      
+         
+          <a href="/2018/09/28/前端知识小记/" data-hover="前端知识小记">上一篇</a>      
+            
+        
+      
+        
+        <a href="/2018/09/26/搭建Vue开发环境/" data-hover="Vue开发环境的搭建"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>
