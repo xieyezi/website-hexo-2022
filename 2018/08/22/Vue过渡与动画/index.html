@@ -220,8 +220,34 @@
   </div>
 </div> 
 	
+
+
+    <div id="comment">   
+    </div>
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+
+    <script src="//unpkg.com/valine@v1.1.8-beta/dist/Valine.min.js"></script>
+
+    <script>
+        new Valine({
+        el: '#comment',
+        notify:false, 
+        verify:false, 
+        app_id: 'cFM0eCo0CQ9xmBXmHi1eltol-gzGzoHsz',
+        app_key: 'oh9tizsnvV2vNvWgqEvoNtQO',  
+        path:window.location.pathname, 
+        avatar:'mm' ,
+        guest_info:['nick','mail']
+        });
+    </script>
 	
 </article>
+
+	<div class="sidebar">
+		<h4 class="toc-title">目录</h4>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#过渡"><span class="toc-text">过渡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单元素-组件的过渡"><span class="toc-text">单元素/组件的过渡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过渡的类名"><span class="toc-text">过渡的类名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#css动画"><span class="toc-text">css动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引入第三方css动画库"><span class="toc-text">引入第三方css动画库</span></a></li></ol>
+	</div>
 
           </section> 
       </div>            

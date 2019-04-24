@@ -211,8 +211,34 @@
   </div>
 </div> 
 	
+
+
+    <div id="comment">   
+    </div>
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+
+    <script src="//unpkg.com/valine@v1.1.8-beta/dist/Valine.min.js"></script>
+
+    <script>
+        new Valine({
+        el: '#comment',
+        notify:false, 
+        verify:false, 
+        app_id: 'cFM0eCo0CQ9xmBXmHi1eltol-gzGzoHsz',
+        app_key: 'oh9tizsnvV2vNvWgqEvoNtQO',  
+        path:window.location.pathname, 
+        avatar:'mm' ,
+        guest_info:['nick','mail']
+        });
+    </script>
 	
 </article>
+
+	<div class="sidebar">
+		<h4 class="toc-title">目录</h4>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#函数的扩展"><span class="toc-text">函数的扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#函数参数的默认值"><span class="toc-text">函数参数的默认值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数参数默认值的作用域"><span class="toc-text">函数参数默认值的作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rest参数"><span class="toc-text">rest参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数的name属性"><span class="toc-text">函数的name属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#箭头函数"><span class="toc-text">箭头函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#箭头函数的注意事项"><span class="toc-text">箭头函数的注意事项</span></a></li></ol></li></ol>
+	</div>
 
           </section> 
       </div>            
