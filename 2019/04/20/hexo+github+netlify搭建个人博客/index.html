@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Hexo+Github+Netlify搭建个人博客 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		Hexo+Github+Netlify搭建个人博客
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		4月 20, 2019
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			1832
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  我的博客在曾经的很长一段时间以内，我都是将博客静态页面托管到<a href="https://pages.github.com/" target="_blank" rel="noopener">Github pages</a>进行渲染的，但是大家都知道，我们国内访问GitHub如果不挂<del>翻墙</del>的话，访问速度非常慢☹️.虽然我的博客一直以来都没有太多的访问量，但是作为一个追求极致体验的人，怎么忍受得了呢 🤟.<a id="more"></a></p>
+<h3 id="寻找方案"><a href="#寻找方案" class="headerlink" title="寻找方案"></a>寻找方案</h3><p>  于是我在网上搜索最优化的解决方案。我想的是，生成博客的渲染框架还是使用Hexo,但是页面托管我得重新找一个托管商，于是我在vue的官网，知道了<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>这个神器。Netlify是什么：</p>
+<blockquote>
+<p>Netlify is a unified platform that automates your code to create high-performant, easily maintainable sites and web apps.</p>
+</blockquote>
+<p>我来总结一下，它有如下功能：</p>
+<ul>
+<li>可以托管静态资源</li>
+<li>可以将静态网站部署到CDN上</li>
+<li>Continuous Deployment 持续部署，当你提交改变到git 仓库，它就会自动运行build command，进行自动部署</li>
+<li>可以添加自定义域名</li>
+<li>重头戏：<strong>可以启用免费的TLS证书，启用HTTPS</strong></li>
+</ul>
+<p>Oh my God!!,这可比Git pages好太多了👏我们来对比一下Github pages：</p>
+<ul>
+<li><p>github虽然没有被墙，但是那个访问速度非常的慢，对国内访问的用户来说体验极差</p>
+</li>
+<li><p>百度无法抓取，众所周知国内用百度的还是多，如果你写的文章，无法被百度抓取收录，那还是有点坑的</p>
+</li>
+<li><p>配置繁琐，使用不友好。https证书配置这一项就麻烦的要死</p>
+</li>
+<li><p>无法做CDN加速。未备案域名服务器，无法使用国内的cnd加速服务</p>
+</li>
+</ul>
+<p>所以，我准备采用Netlify作为我的页面托管商。下面我们即将开始搭建博客咯！</p>
+<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><p>​    第一步，我们需要安装<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a></p>
+<p>​    安装hexo之前需要安装一下环境：</p>
+<ul>
+<li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li>
+<li><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></li>
+</ul>
+<p>安装完node后由于npm是自带的，可能版本有些落后，需要先将自身升级一下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm -g install npm</span><br></pre></td></tr></table></figure>
+<p>不能翻墙的同学，可使用npm淘宝镜像cnpm:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：安装了淘宝源的镜像cnpm之后，接下来所有的npm 开头的命令均使用<code>cnpm</code>来代替</p>
+</blockquote>
+<p>接着我们来安装Hexo：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<p>测试一下是否安装成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br></pre></td></tr></table></figure>
+<p>然后在我们的电脑上，选择一个目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &quot;博客目录&quot; #使用hexo命令在指定的&lt;folder&gt;文件夹下初始化创建一个博客项目</span><br><span class="line">$ cd &lt;folder&gt;         #进入创建好的项目目录</span><br><span class="line">$ npm install         #使用npm安装所需依赖。</span><br></pre></td></tr></table></figure>
+<p>这个新建的”博客目录”就是用来作为你以后存放博客的目录，这其中包括博客的配置、文章等等的一切。新建完成之后，我们用任何一个代码编辑器打开我们刚刚新建的目录，有如下目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：这里会涉及一些<a href="https://hexo.io/zh-cn/docs/commands" target="_blank" rel="noopener">hexo cli</a>的指令，请自行学习一下,以后都会用到的.</p>
+</blockquote>
+<p>然后我们试着跑一下，看是否能够成功启动:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br><span class="line">$ hexo s     #开启服务器预览</span><br></pre></td></tr></table></figure>
+<p>执行完 <code>hexo s</code> 后命令行窗口将提示您如下信息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+<p>打开<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可预览你的第一篇hexo博文。</p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>  接下来才是重头戏：进入部署环节.在正式进行部署之前，我先来讲一下什么是部署：</p>
+<p> 当我们使用 <code>hexo g</code> 和 <code>hexo s</code> 命令生成并开启服务后，我们本地访问的测试域名-<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 实际是指向了我们当前目录下的 public 目录，也就是说 <code>hexo g</code> 命令会生成 public 目录，这个目录下面装着我们的静态页面文件和相关依赖，部署的过程就是将这个 public 目录下的文件放到我们的服务器上这样就完成了部署。</p>
+<p>好了接下来我们来进行部署：</p>
+<p>先到</p>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/GitHub/">GitHub</a> <a class="tag-link" href="/tags/Hexo/">Hexo</a> <a class="tag-link" href="/tags/Netlify/">Netlify</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+           
+        
+      
+        
+        <a href="/2019/04/20/Vue多个组件映射到同一个组件,页面不刷新？/" data-hover="Vue多个组件映射到同一个组件,页面不刷新？"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+
+
+    <div id="comment">   
+    </div>
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+
+    <script src="//unpkg.com/valine@v1.1.8-beta/dist/Valine.min.js"></script>
+
+    <script>
+        new Valine({
+        el: '#comment',
+        notify:false, 
+        verify:false, 
+        app_id: 'cFM0eCo0CQ9xmBXmHi1eltol-gzGzoHsz',
+        app_key: 'oh9tizsnvV2vNvWgqEvoNtQO',  
+        path:window.location.pathname, 
+        avatar:'mm' ,
+        guest_info:['nick','mail']
+        });
+    </script>
+	
+</article>
+
+	<div class="sidebar">
+		<h4 class="toc-title">目录</h4>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#说在前面"><span class="toc-text">说在前面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找方案"><span class="toc-text">寻找方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始动手"><span class="toc-text">开始动手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署"><span class="toc-text">部署</span></a></li></ol>
+	</div>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>
