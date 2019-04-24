@@ -74,7 +74,7 @@
 	
 		<i class="iconfont icon-words"></i>
 		<span>
-			1832
+			3172
 		</span>
 	
 </div>
@@ -88,11 +88,11 @@
 
 			
 					<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  我的博客在曾经的很长一段时间以内，我都是将博客静态页面托管到<a href="https://pages.github.com/" target="_blank" rel="noopener">Github pages</a>进行渲染的，但是大家都知道，我们国内访问GitHub如果不挂<del>翻墙</del>的话，访问速度非常慢☹️.虽然我的博客一直以来都没有太多的访问量，但是作为一个追求极致体验的人，怎么忍受得了呢 🤟.<a id="more"></a></p>
-<h3 id="寻找方案"><a href="#寻找方案" class="headerlink" title="寻找方案"></a>寻找方案</h3><p>  于是我在网上搜索最优化的解决方案。我想的是，生成博客的渲染框架还是使用Hexo,但是页面托管我得重新找一个托管商，于是我在vue的官网，知道了<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>这个神器。Netlify是什么：</p>
+<h3 id="寻找方案"><a href="#寻找方案" class="headerlink" title="寻找方案"></a>寻找方案</h3><p>  于是我在网上搜索最优化的解决方案。我想的是，生成博客的渲染框架还是使用<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>,但是页面托管我得重新找一个托管商，于是我在vue的官网，知道了<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>这个神器。Netlify是什么：</p>
 <blockquote>
 <p>Netlify is a unified platform that automates your code to create high-performant, easily maintainable sites and web apps.</p>
 </blockquote>
-<p>我来总结一下，它有如下功能：</p>
+<p>我看了官网的介绍，总结一下，它有如下功能：</p>
 <ul>
 <li>可以托管静态资源</li>
 <li>可以将静态网站部署到CDN上</li>
@@ -144,7 +144,52 @@
 <h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>  接下来才是重头戏：进入部署环节.在正式进行部署之前，我先来讲一下什么是部署：</p>
 <p> 当我们使用 <code>hexo g</code> 和 <code>hexo s</code> 命令生成并开启服务后，我们本地访问的测试域名-<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 实际是指向了我们当前目录下的 public 目录，也就是说 <code>hexo g</code> 命令会生成 public 目录，这个目录下面装着我们的静态页面文件和相关依赖，部署的过程就是将这个 public 目录下的文件放到我们的服务器上这样就完成了部署。</p>
 <p>好了接下来我们来进行部署：</p>
-<p>先到</p>
+<h4 id="同步到Github"><a href="#同步到Github" class="headerlink" title="同步到Github"></a>同步到Github</h4><p>先到GitHub新建一个repository:</p>
+<p><img src="https://i.loli.net/2019/04/24/5cc0876b108de.png" alt="QQ20190424-235658@2x.png"></p>
+<p>复制你刚刚新建的repository的地址,像这样: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure>
+<p>  回到项目根目录,将你的本地项目和新建的repository联系起来:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure>
+<p>  在当前根目录下新建.gitignore文件<br>  将不需要同步的文件和目录写到.gitignore:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line">themes/</span><br><span class="line">.deploy*/</span><br></pre></td></tr></table></figure>
+<p>  完成之后,到根目录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &apos;commit information&apos;</span><br></pre></td></tr></table></figure>
+<p>  接着推送到GitHub:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --set-upstream origin master</span><br></pre></td></tr></table></figure>
+<p>到这里，我们已经讲我们的项目推送到GitHub的master分支下面了.接下来我们要对hexo进行一些配置:</p>
+<p>打开hexo根目录的<code>_config.yml</code>文件找到deploy项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git #部署方式</span><br><span class="line">  repository: git@github.com:xieyezi/your-Repository.git #关联github仓库</span><br><span class="line">  branch: run-page #部署分支</span><br></pre></td></tr></table></figure>
+<p>在这里，我们将在这个项目仓库下新建一个<code>run-page</code>分支，至于有什么用，我等一下会解释，先跟着我操作起来.</p>
+<p>配置好了之后，保存退出，我们重新执行一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br></pre></td></tr></table></figure>
+<p>最后，我们将public目录同步到Github:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d #部署应用</span><br></pre></td></tr></table></figure>
+<p>在执行这个命令的时候，我们可能会出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
+<p>那是因为我们缺少一个依赖，我们安装一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>然后再次执行一下，执行完成我们到Github 会发现我们的项目多了一个<code>run-page</code>，这个分支就是我们后面要用来生成我们到静态页面的。</p>
+<h4 id="托管到Netlify"><a href="#托管到Netlify" class="headerlink" title="托管到Netlify"></a>托管到Netlify</h4><p>我们先到<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>官网注册一下账号，因为我们是将项目托管到GitHub的，所以我们选择GitHub登录：</p>
+<p><img src="https://i.loli.net/2019/04/25/5cc08d58a4e22.png" alt="QQ20190425-002152@2x.png"></p>
+<p>进入官网，点击新建：</p>
+<p><img src="https://i.loli.net/2019/04/25/5cc08f8a6b0d1.png" alt="QQ20190425-002343@2x.png"></p>
+<p>选择GitHub来源：</p>
+<p><img src="https://i.loli.net/2019/04/25/5cc08f8e877c0.png" alt="QQ20190425-002408@2x.png"></p>
+<p>然后选择我们刚刚新建的项目：</p>
+<p><img src="https://i.loli.net/2019/04/25/5cc08f8f64abc.png" alt="QQ20190425-002857@2x.png"></p>
+<p>进入一步进行配置：</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-003120@2x.png" data-src="https://i.loli.net/2019/04/25/5cc08f8f8c841.png" class="lazyload"></p>
+<p>接着等待一会儿，Netlify会自动帮我们生成网址：</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-003723@2x.png" data-src="https://i.loli.net/2019/04/25/5cc090e2f0713.png" class="lazyload"></p>
+<p>第一次新建的时候，它会随机生成一个Netlify的二级域名，我们可以进行自定义二级域名，点击”Change site name”即可进行设置，像这样：</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-004139@2x.png" data-src="https://i.loli.net/2019/04/25/5cc091d29a563.png" class="lazyload"></p>
+<p>点击Save,等待Netlify进行热部署即可。</p>
+<p>然后点击创建好的二级域名，成功访问✌️！！！</p>
+<p>以后我们写好博客之后，直接执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<p>我们的个人博客就会自动进行刷新，是不是超厉害！！</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p> 部署完成之后，到这里，可能有的同学会觉得很晕，我画了一个部署的流程图：</p>
   	
 					
 	  </div>     
@@ -166,7 +211,7 @@
 
 <div class="post-footer">
   <div class="pf-left">
-      <img class="pf-avatar" src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
+      <img class="pf-avatar lazyload" src="/images/placeholder.png" data-src="http://wx2.sinaimg.cn/mw690/89296167gy1fu5ph67x17j21kw1kwhdu.jpg">
       <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
   </div>
 
@@ -187,8 +232,8 @@
 	<span class="donate-cancel iconfont icon-cancel"></span>
 
 	<div class="donate-img-box">
-		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
-		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate1.png">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate2.png">	
 	</div>
 
 	<span class="donate-word">世界美好 你也是</span>
@@ -266,7 +311,7 @@
 
 	<div class="sidebar">
 		<h4 class="toc-title">目录</h4>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#说在前面"><span class="toc-text">说在前面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找方案"><span class="toc-text">寻找方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始动手"><span class="toc-text">开始动手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署"><span class="toc-text">部署</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#说在前面"><span class="toc-text">说在前面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#寻找方案"><span class="toc-text">寻找方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开始动手"><span class="toc-text">开始动手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署"><span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同步到Github"><span class="toc-text">同步到Github</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#托管到Netlify"><span class="toc-text">托管到Netlify</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思路"><span class="toc-text">思路</span></a></li></ol>
 	</div>
 
           </section> 
@@ -291,7 +336,7 @@
      <div class="mobile-menu">      
 
       
-      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      <img class="mobile-menu-icon lazyload" src="/images/placeholder.png" data-src="/images/favicon.png">   
       
 
          
