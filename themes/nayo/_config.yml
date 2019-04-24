@@ -40,7 +40,7 @@ social:
 # toc
 # 文章的目录
 toc:
-    false
+    true
 
 # site analytics
 # 站点访问统计
@@ -59,7 +59,7 @@ disqus:
 # valine(https://github.com/xCss/Valine)
 # 创建 leancloud 应用 获取 id|key 填入即可
 leancloud:
-  comment: false
+  comment: true
   app_id: cFM0eCo0CQ9xmBXmHi1eltol-gzGzoHsz
   app_key: oh9tizsnvV2vNvWgqEvoNtQO
 
