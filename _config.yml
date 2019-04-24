@@ -79,7 +79,7 @@ theme: nayo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: git@github.com:xieyezi/xieyezi.github.io.git
+  repository: git@github.com:xieyezi/hexo-blog.git
   branch: master
 ### search in blog
 search:
