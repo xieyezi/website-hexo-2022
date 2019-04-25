@@ -74,7 +74,7 @@
 	
 		<i class="iconfont icon-words"></i>
 		<span>
-			3373
+			3660
 		</span>
 	
 </div>
@@ -194,7 +194,18 @@
 <p>这就是我们为什么要利用两个分支的原因,我们将我们的项目分支托管到<code>master</code>,然后将生成的<code>public</code>目录,托管到<code>run-page</code>分支,以后我们可以写完博客以后,就可以直接输入：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
 <p>进行我们博客的推送,一旦我们推送到<code>run-page</code>分支,Netlify监测到我们的仓库发生了变化,就会根据这个分支的变化进行实时拉取并部署.</p>
-<p>怎么样,你有没有学会呢？</p>
+<h3 id="绑定自己的域名"><a href="#绑定自己的域名" class="headerlink" title="绑定自己的域名"></a>绑定自己的域名</h3><p> 在Netlify官网的这个项目下,进入Domain Settings进行设置:</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-160540@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16a5d12a0c.png" class="lazyload"></p>
+<p>设置之后,它会提醒什么去设置域名解析.我的域名提供商是阿里云,所以我去阿里云进行解析记录:</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-161110@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16bad6d20c.png" class="lazyload"></p>
+<p>设置两条记录,将记录值写入为netlify为你提供的二级域名,返回netlify查看结果:</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-161356@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16c4ea4cf6.png" class="lazyload"></p>
+<p>成功显示你绑定的域名.</p>
+<h3 id="设置Https证书"><a href="#设置Https证书" class="headerlink" title="设置Https证书"></a>设置Https证书</h3><p>我们可以选择netlify为我们自动生成的证书,它会帮你去Let’s Encrypt申请免费的证书,我们也可以用我们自己的证书,我用的是阿里云的免费证书,先下载Apache的证书:</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-162743@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16f8a5d8dd.png" class="lazyload"></p>
+<p>然后到Netlify的Domain Settings进行设置:</p>
+<p><img src="/images/placeholder.png" alt="QQ20190425-163740@2x.png" data-src="https://i.loli.net/2019/04/25/5cc171e01b6af.png" class="lazyload"></p>
+<p>点击安装证书,然后等待结果.</p>
   	
 					
 	  </div>     

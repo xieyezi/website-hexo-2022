@@ -5,7 +5,7 @@
     <entry>
       <title>Hexo+Github+Netlify搭建个人博客</title>
       <link href="/2019/04/20/hexo+github+netlify%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
-      <content type="html"><![CDATA[<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  我的博客在曾经的很长一段时间以内,我都是将博客静态页面托管到<a href="https://pages.github.com/" target="_blank" rel="noopener">Github pages</a>进行渲染的,但是大家都知道,我们国内访问GitHub如果不挂<del>翻墙</del>的话,访问速度非常慢☹️.虽然我的博客一直以来都没有太多的访问量,但是作为一个追求极致体验的人,怎么忍受得了呢 🤟.<a id="more"></a></p><h3 id="寻找方案"><a href="#寻找方案" class="headerlink" title="寻找方案"></a>寻找方案</h3><p>  于是我在网上搜索最优化的解决方案.我想的是,生成博客的渲染框架还是使用<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>,但是页面托管我得重新找一个托管商,于是我在vue的官网,知道了<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>这个神器.Netlify是什么：</p><blockquote><p>Netlify is a unified platform that automates your code to create high-performant, easily maintainable sites and web apps.</p></blockquote><p>我看了官网的介绍,总结一下,它有如下功能：</p><ul><li>可以托管静态资源</li><li>可以将静态网站部署到CDN上</li><li>Continuous Deployment 持续部署,当你提交改变到git 仓库,它就会自动运行build command,进行自动部署</li><li>可以添加自定义域名</li><li>重头戏：<strong>可以启用免费的TLS证书,启用HTTPS</strong></li></ul><p>Oh my God!!,这可比Git pages好太多了👏我们来对比一下Github pages：</p><ul><li><p>github虽然没有被墙,但是那个访问速度非常的慢,对国内访问的用户来说体验极差</p></li><li><p>百度无法抓取,众所周知国内用百度的还是多,如果你写的文章,无法被百度抓取收录,那还是有点坑的</p></li><li><p>配置繁琐,使用不友好.https证书配置这一项就麻烦的要死</p></li><li><p>无法做CDN加速.未备案域名服务器,无法使用国内的cnd加速服务</p></li></ul><p>所以,我准备采用Netlify作为我的页面托管商.下面我们即将开始搭建博客咯！</p><h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><p>​    第一步,我们需要安装<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a></p><p>​    安装hexo之前需要安装一下环境：</p><ul><li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li><li><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></li></ul><p>安装完node后由于npm是自带的,可能版本有些落后,需要先将自身升级一下.</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm -g install npm</span><br></pre></td></tr></table></figure><p>不能翻墙的同学,可使用npm淘宝镜像cnpm:</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure><blockquote><p>注：安装了淘宝源的镜像cnpm之后,接下来所有的npm 开头的命令均使用<code>cnpm</code>来代替</p></blockquote><p>接着我们来安装Hexo：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure><p>测试一下是否安装成功：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br></pre></td></tr></table></figure><p>然后在我们的电脑上,选择一个目录：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &quot;博客目录&quot; #使用hexo命令在指定的&lt;folder&gt;文件夹下初始化创建一个博客项目</span><br><span class="line">$ cd &lt;folder&gt;         #进入创建好的项目目录</span><br><span class="line">$ npm install         #使用npm安装所需依赖.</span><br></pre></td></tr></table></figure><p>这个新建的”博客目录”就是用来作为你以后存放博客的目录,这其中包括博客的配置、文章等等的一切.新建完成之后,我们用任何一个代码编辑器打开我们刚刚新建的目录,有如下目录结构：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure><blockquote><p>注：这里会涉及一些<a href="https://hexo.io/zh-cn/docs/commands" target="_blank" rel="noopener">hexo cli</a>的指令,请自行学习一下,以后都会用到的.</p></blockquote><p>然后我们试着跑一下,看是否能够成功启动:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br><span class="line">$ hexo s     #开启服务器预览</span><br></pre></td></tr></table></figure><p>执行完 <code>hexo s</code> 后命令行窗口将提示您如下信息:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure><p>打开<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可预览你的第一篇hexo博文.</p><h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>  接下来才是重头戏：进入部署环节.在正式进行部署之前,我先来讲一下什么是部署：</p><p> 当我们使用 <code>hexo g</code> 和 <code>hexo s</code> 命令生成并开启服务后,我们本地访问的测试域名-<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 实际是指向了我们当前目录下的 public 目录,也就是说 <code>hexo g</code> 命令会生成 public 目录,这个目录下面装着我们的静态页面文件和相关依赖,部署的过程就是将这个 public 目录下的文件放到我们的服务器上这样就完成了部署.</p><p>好了接下来我们来进行部署：</p><h4 id="同步到Github"><a href="#同步到Github" class="headerlink" title="同步到Github"></a>同步到Github</h4><p>先到GitHub新建一个repository:</p><p><img src="https://i.loli.net/2019/04/24/5cc0876b108de.png" alt="QQ20190424-235658@2x.png"></p><p>复制你刚刚新建的repository的地址,像这样: </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure><p>  回到项目根目录,将你的本地项目和新建的repository联系起来:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure><p>  在当前根目录下新建.gitignore文件<br>  将不需要同步的文件和目录写到.gitignore:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line">themes/</span><br><span class="line">.deploy*/</span><br></pre></td></tr></table></figure><p>  完成之后,到根目录:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add ./</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &apos;commit information&apos;</span><br></pre></td></tr></table></figure><p>  接着推送到GitHub:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --set-upstream origin master</span><br></pre></td></tr></table></figure><p>到这里,我们已经讲我们的项目推送到GitHub的master分支下面了.接下来我们要对hexo进行一些配置:</p><p>打开hexo根目录的<code>_config.yml</code>文件找到deploy项：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git #部署方式</span><br><span class="line">  repository: git@github.com:xieyezi/your-Repository.git #关联github仓库</span><br><span class="line">  branch: run-page #部署分支</span><br></pre></td></tr></table></figure><p>在这里,我们将在这个项目仓库下新建一个<code>run-page</code>分支,至于有什么用,我等一下会解释,先跟着我操作起来.</p><p>配置好了之后,保存退出,我们重新执行一下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br></pre></td></tr></table></figure><p>最后,我们将public目录同步到Github:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d #部署应用</span><br></pre></td></tr></table></figure><p>在执行这个命令的时候,我们可能会出现如下错误：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ERROR Deployer not found: git</span><br></pre></td></tr></table></figure><p>那是因为我们缺少一个依赖,我们安装一下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><p>然后再次执行一下,执行完成我们到Github 会发现我们的项目多了一个<code>run-page</code>,这个分支就是我们后面要用来生成我们到静态页面的.</p><h4 id="托管到Netlify"><a href="#托管到Netlify" class="headerlink" title="托管到Netlify"></a>托管到Netlify</h4><p>我们先到<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>官网注册一下账号,因为我们是将项目托管到GitHub的,所以我们选择GitHub登录：</p><p><img src="https://i.loli.net/2019/04/25/5cc08d58a4e22.png" alt="QQ20190425-002152@2x.png"></p><p>进入官网,点击新建：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8a6b0d1.png" alt="QQ20190425-002343@2x.png"></p><p>选择GitHub来源：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8e877c0.png" alt="QQ20190425-002408@2x.png"></p><p>然后选择我们刚刚新建的项目：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8f64abc.png" alt="QQ20190425-002857@2x.png"></p><p>进入一步进行配置：</p><p><img src="/images/placeholder.png" alt="QQ20190425-003120@2x.png" data-src="https://i.loli.net/2019/04/25/5cc08f8f8c841.png" class="lazyload"></p><p>接着等待一会儿,Netlify会自动帮我们生成网址：</p><p><img src="/images/placeholder.png" alt="QQ20190425-003723@2x.png" data-src="https://i.loli.net/2019/04/25/5cc090e2f0713.png" class="lazyload"></p><p>第一次新建的时候,它会随机生成一个Netlify的二级域名,我们可以进行自定义二级域名,点击”Change site name”即可进行设置,像这样：</p><p><img src="/images/placeholder.png" alt="QQ20190425-004139@2x.png" data-src="https://i.loli.net/2019/04/25/5cc091d29a563.png" class="lazyload"></p><p>点击Save,等待Netlify进行热部署即可.</p><p>然后点击创建好的二级域名,成功访问✌️！！！</p><p>以后我们写好博客之后,直接执行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>我们的个人博客就会自动进行刷新,是不是超厉害！！</p><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p> 部署完成之后,到这里,可能有的同学会觉得很晕,我画了一个部署的流程图：</p><p><img src="/images/placeholder.png" alt="QQ20190425-144946@2x.png" data-src="https://i.loli.net/2019/04/25/5cc1589723558.png" class="lazyload"></p><p>这就是我们为什么要利用两个分支的原因,我们将我们的项目分支托管到<code>master</code>,然后将生成的<code>public</code>目录,托管到<code>run-page</code>分支,以后我们可以写完博客以后,就可以直接输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>进行我们博客的推送,一旦我们推送到<code>run-page</code>分支,Netlify监测到我们的仓库发生了变化,就会根据这个分支的变化进行实时拉取并部署.</p><p>怎么样,你有没有学会呢？</p>]]></content>
+      <content type="html"><![CDATA[<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  我的博客在曾经的很长一段时间以内,我都是将博客静态页面托管到<a href="https://pages.github.com/" target="_blank" rel="noopener">Github pages</a>进行渲染的,但是大家都知道,我们国内访问GitHub如果不挂<del>翻墙</del>的话,访问速度非常慢☹️.虽然我的博客一直以来都没有太多的访问量,但是作为一个追求极致体验的人,怎么忍受得了呢 🤟.<a id="more"></a></p><h3 id="寻找方案"><a href="#寻找方案" class="headerlink" title="寻找方案"></a>寻找方案</h3><p>  于是我在网上搜索最优化的解决方案.我想的是,生成博客的渲染框架还是使用<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a>,但是页面托管我得重新找一个托管商,于是我在vue的官网,知道了<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>这个神器.Netlify是什么：</p><blockquote><p>Netlify is a unified platform that automates your code to create high-performant, easily maintainable sites and web apps.</p></blockquote><p>我看了官网的介绍,总结一下,它有如下功能：</p><ul><li>可以托管静态资源</li><li>可以将静态网站部署到CDN上</li><li>Continuous Deployment 持续部署,当你提交改变到git 仓库,它就会自动运行build command,进行自动部署</li><li>可以添加自定义域名</li><li>重头戏：<strong>可以启用免费的TLS证书,启用HTTPS</strong></li></ul><p>Oh my God!!,这可比Git pages好太多了👏我们来对比一下Github pages：</p><ul><li><p>github虽然没有被墙,但是那个访问速度非常的慢,对国内访问的用户来说体验极差</p></li><li><p>百度无法抓取,众所周知国内用百度的还是多,如果你写的文章,无法被百度抓取收录,那还是有点坑的</p></li><li><p>配置繁琐,使用不友好.https证书配置这一项就麻烦的要死</p></li><li><p>无法做CDN加速.未备案域名服务器,无法使用国内的cnd加速服务</p></li></ul><p>所以,我准备采用Netlify作为我的页面托管商.下面我们即将开始搭建博客咯！</p><h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><p>​    第一步,我们需要安装<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a></p><p>​    安装hexo之前需要安装一下环境：</p><ul><li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li><li><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></li></ul><p>安装完node后由于npm是自带的,可能版本有些落后,需要先将自身升级一下.</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm -g install npm</span><br></pre></td></tr></table></figure><p>不能翻墙的同学,可使用npm淘宝镜像cnpm:</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure><blockquote><p>注：安装了淘宝源的镜像cnpm之后,接下来所有的npm 开头的命令均使用<code>cnpm</code>来代替</p></blockquote><p>接着我们来安装Hexo：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure><p>测试一下是否安装成功：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br></pre></td></tr></table></figure><p>然后在我们的电脑上,选择一个目录：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &quot;博客目录&quot; #使用hexo命令在指定的&lt;folder&gt;文件夹下初始化创建一个博客项目</span><br><span class="line">$ cd &lt;folder&gt;         #进入创建好的项目目录</span><br><span class="line">$ npm install         #使用npm安装所需依赖.</span><br></pre></td></tr></table></figure><p>这个新建的”博客目录”就是用来作为你以后存放博客的目录,这其中包括博客的配置、文章等等的一切.新建完成之后,我们用任何一个代码编辑器打开我们刚刚新建的目录,有如下目录结构：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure><blockquote><p>注：这里会涉及一些<a href="https://hexo.io/zh-cn/docs/commands" target="_blank" rel="noopener">hexo cli</a>的指令,请自行学习一下,以后都会用到的.</p></blockquote><p>然后我们试着跑一下,看是否能够成功启动:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br><span class="line">$ hexo s     #开启服务器预览</span><br></pre></td></tr></table></figure><p>执行完 <code>hexo s</code> 后命令行窗口将提示您如下信息:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure><p>打开<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可预览你的第一篇hexo博文.</p><h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>  接下来才是重头戏：进入部署环节.在正式进行部署之前,我先来讲一下什么是部署：</p><p> 当我们使用 <code>hexo g</code> 和 <code>hexo s</code> 命令生成并开启服务后,我们本地访问的测试域名-<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 实际是指向了我们当前目录下的 public 目录,也就是说 <code>hexo g</code> 命令会生成 public 目录,这个目录下面装着我们的静态页面文件和相关依赖,部署的过程就是将这个 public 目录下的文件放到我们的服务器上这样就完成了部署.</p><p>好了接下来我们来进行部署：</p><h4 id="同步到Github"><a href="#同步到Github" class="headerlink" title="同步到Github"></a>同步到Github</h4><p>先到GitHub新建一个repository:</p><p><img src="https://i.loli.net/2019/04/24/5cc0876b108de.png" alt="QQ20190424-235658@2x.png"></p><p>复制你刚刚新建的repository的地址,像这样: </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure><p>  回到项目根目录,将你的本地项目和新建的repository联系起来:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/xieyezi/your-Repository.git</span><br></pre></td></tr></table></figure><p>  在当前根目录下新建.gitignore文件<br>  将不需要同步的文件和目录写到.gitignore:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line">themes/</span><br><span class="line">.deploy*/</span><br></pre></td></tr></table></figure><p>  完成之后,到根目录:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add ./</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &apos;commit information&apos;</span><br></pre></td></tr></table></figure><p>  接着推送到GitHub:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --set-upstream origin master</span><br></pre></td></tr></table></figure><p>到这里,我们已经讲我们的项目推送到GitHub的master分支下面了.接下来我们要对hexo进行一些配置:</p><p>打开hexo根目录的<code>_config.yml</code>文件找到deploy项：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git #部署方式</span><br><span class="line">  repository: git@github.com:xieyezi/your-Repository.git #关联github仓库</span><br><span class="line">  branch: run-page #部署分支</span><br></pre></td></tr></table></figure><p>在这里,我们将在这个项目仓库下新建一个<code>run-page</code>分支,至于有什么用,我等一下会解释,先跟着我操作起来.</p><p>配置好了之后,保存退出,我们重新执行一下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean #清理各种缓存和旧文件</span><br><span class="line">$ hexo g     #生成静态文件</span><br></pre></td></tr></table></figure><p>最后,我们将public目录同步到Github:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d #部署应用</span><br></pre></td></tr></table></figure><p>在执行这个命令的时候,我们可能会出现如下错误：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ERROR Deployer not found: git</span><br></pre></td></tr></table></figure><p>那是因为我们缺少一个依赖,我们安装一下:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><p>然后再次执行一下,执行完成我们到Github 会发现我们的项目多了一个<code>run-page</code>,这个分支就是我们后面要用来生成我们到静态页面的.</p><h4 id="托管到Netlify"><a href="#托管到Netlify" class="headerlink" title="托管到Netlify"></a>托管到Netlify</h4><p>我们先到<a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a>官网注册一下账号,因为我们是将项目托管到GitHub的,所以我们选择GitHub登录：</p><p><img src="https://i.loli.net/2019/04/25/5cc08d58a4e22.png" alt="QQ20190425-002152@2x.png"></p><p>进入官网,点击新建：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8a6b0d1.png" alt="QQ20190425-002343@2x.png"></p><p>选择GitHub来源：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8e877c0.png" alt="QQ20190425-002408@2x.png"></p><p>然后选择我们刚刚新建的项目：</p><p><img src="https://i.loli.net/2019/04/25/5cc08f8f64abc.png" alt="QQ20190425-002857@2x.png"></p><p>进入一步进行配置：</p><p><img src="/images/placeholder.png" alt="QQ20190425-003120@2x.png" data-src="https://i.loli.net/2019/04/25/5cc08f8f8c841.png" class="lazyload"></p><p>接着等待一会儿,Netlify会自动帮我们生成网址：</p><p><img src="/images/placeholder.png" alt="QQ20190425-003723@2x.png" data-src="https://i.loli.net/2019/04/25/5cc090e2f0713.png" class="lazyload"></p><p>第一次新建的时候,它会随机生成一个Netlify的二级域名,我们可以进行自定义二级域名,点击”Change site name”即可进行设置,像这样：</p><p><img src="/images/placeholder.png" alt="QQ20190425-004139@2x.png" data-src="https://i.loli.net/2019/04/25/5cc091d29a563.png" class="lazyload"></p><p>点击Save,等待Netlify进行热部署即可.</p><p>然后点击创建好的二级域名,成功访问✌️！！！</p><p>以后我们写好博客之后,直接执行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>我们的个人博客就会自动进行刷新,是不是超厉害！！</p><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p> 部署完成之后,到这里,可能有的同学会觉得很晕,我画了一个部署的流程图：</p><p><img src="/images/placeholder.png" alt="QQ20190425-144946@2x.png" data-src="https://i.loli.net/2019/04/25/5cc1589723558.png" class="lazyload"></p><p>这就是我们为什么要利用两个分支的原因,我们将我们的项目分支托管到<code>master</code>,然后将生成的<code>public</code>目录,托管到<code>run-page</code>分支,以后我们可以写完博客以后,就可以直接输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean </span><br><span class="line">$ hexo g     </span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure><p>进行我们博客的推送,一旦我们推送到<code>run-page</code>分支,Netlify监测到我们的仓库发生了变化,就会根据这个分支的变化进行实时拉取并部署.</p><h3 id="绑定自己的域名"><a href="#绑定自己的域名" class="headerlink" title="绑定自己的域名"></a>绑定自己的域名</h3><p> 在Netlify官网的这个项目下,进入Domain Settings进行设置:</p><p><img src="/images/placeholder.png" alt="QQ20190425-160540@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16a5d12a0c.png" class="lazyload"></p><p>设置之后,它会提醒什么去设置域名解析.我的域名提供商是阿里云,所以我去阿里云进行解析记录:</p><p><img src="/images/placeholder.png" alt="QQ20190425-161110@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16bad6d20c.png" class="lazyload"></p><p>设置两条记录,将记录值写入为netlify为你提供的二级域名,返回netlify查看结果:</p><p><img src="/images/placeholder.png" alt="QQ20190425-161356@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16c4ea4cf6.png" class="lazyload"></p><p>成功显示你绑定的域名.</p><h3 id="设置Https证书"><a href="#设置Https证书" class="headerlink" title="设置Https证书"></a>设置Https证书</h3><p>我们可以选择netlify为我们自动生成的证书,它会帮你去Let’s Encrypt申请免费的证书,我们也可以用我们自己的证书,我用的是阿里云的免费证书,先下载Apache的证书:</p><p><img src="/images/placeholder.png" alt="QQ20190425-162743@2x.png" data-src="https://i.loli.net/2019/04/25/5cc16f8a5d8dd.png" class="lazyload"></p><p>然后到Netlify的Domain Settings进行设置:</p><p><img src="/images/placeholder.png" alt="QQ20190425-163740@2x.png" data-src="https://i.loli.net/2019/04/25/5cc171e01b6af.png" class="lazyload"></p><p>点击安装证书,然后等待结果.</p>]]></content>
       
       
         <tags>
@@ -144,9 +144,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -210,9 +210,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -226,9 +226,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -242,9 +242,9 @@
       
         <tags>
             
-            <tag> Es6 </tag>
-            
             <tag> JS </tag>
+            
+            <tag> Es6 </tag>
             
         </tags>
       
@@ -274,9 +274,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -290,9 +290,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -370,9 +370,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -386,9 +386,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
             <tag> Gulp </tag>
             
@@ -404,9 +404,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -420,9 +420,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -436,9 +436,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -470,9 +470,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -486,9 +486,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -502,9 +502,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
@@ -518,9 +518,9 @@
       
         <tags>
             
-            <tag> JS </tag>
-            
             <tag> Vue </tag>
+            
+            <tag> JS </tag>
             
         </tags>
       
