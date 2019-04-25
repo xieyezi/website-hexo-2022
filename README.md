@@ -4,13 +4,13 @@
 
 [预览地址](<https://xieyezi.netlify.com/>)
 
-###  🔨构建工具
+###  构建工具🔨
 
 - [Hexo](<https://hexo.io/zh-cn/index.html>)
 - [Github](<https://github.com/>)
-- [Netlify](<https://www.netlify.com/>
+- [Netlify](<https://www.netlify.com/>)
 
-部分截图：
+部分截图如下
 
 首页：
 
