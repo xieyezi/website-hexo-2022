@@ -14,11 +14,11 @@ tags:
 
 ###  寻找方案
 
-  于是我在网上搜索最优化的解决方案。我想的是，生成博客的渲染框架还是使用Hexo,但是页面托管我得重新找一个托管商，于是我在vue的官网，知道了[Netlify](<https://www.netlify.com/>)这个神器。Netlify是什么：
+  于是我在网上搜索最优化的解决方案。我想的是，生成博客的渲染框架还是使用[Hexo](<https://hexo.io/zh-cn/>),但是页面托管我得重新找一个托管商，于是我在vue的官网，知道了[Netlify](<https://www.netlify.com/>)这个神器。Netlify是什么：
 
 > Netlify is a unified platform that automates your code to create high-performant, easily maintainable sites and web apps.
 
-我来总结一下，它有如下功能：
+我看了官网的介绍，总结一下，它有如下功能：
 
 - 可以托管静态资源
 - 可以将静态网站部署到CDN上
@@ -121,5 +121,140 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 
 好了接下来我们来进行部署：
 
-先到
+#### 同步到Github
+
+先到GitHub新建一个repository:
+
+![QQ20190424-235658@2x.png](https://i.loli.net/2019/04/24/5cc0876b108de.png)
+
+复制你刚刚新建的repository的地址,像这样: 
+
+```
+  https://github.com/xieyezi/your-Repository.git
+```
+
+  回到项目根目录,将你的本地项目和新建的repository联系起来:
+
+```
+  git remote add origin https://github.com/xieyezi/your-Repository.git
+```
+
+  在当前根目录下新建.gitignore文件
+  将不需要同步的文件和目录写到.gitignore:
+
+```
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+themes/
+.deploy*/
+```
+
+  完成之后,到根目录:
+
+```
+  git add ./
+```
+
+```
+  git commit -m 'commit information'
+```
+
+  接着推送到GitHub:
+
+```
+ git push --set-upstream origin master
+```
+
+到这里，我们已经讲我们的项目推送到GitHub的master分支下面了.接下来我们要对hexo进行一些配置:
+
+打开hexo根目录的`_config.yml`文件找到deploy项：
+
+```
+deploy:
+  type: git #部署方式
+  repository: git@github.com:xieyezi/your-Repository.git #关联github仓库
+  branch: run-page #部署分支
+```
+
+在这里，我们将在这个项目仓库下新建一个`run-page`分支，至于有什么用，我等一下会解释，先跟着我操作起来.
+
+配置好了之后，保存退出，我们重新执行一下:
+
+```
+$ hexo clean #清理各种缓存和旧文件
+$ hexo g     #生成静态文件
+```
+
+最后，我们将public目录同步到Github:
+
+```
+$ hexo d #部署应用
+```
+
+在执行这个命令的时候，我们可能会出现如下错误：
+
+```
+$ ERROR Deployer not found: git
+```
+
+那是因为我们缺少一个依赖，我们安装一下:
+
+```
+npm install hexo-deployer-git --save
+```
+
+然后再次执行一下，执行完成我们到Github 会发现我们的项目多了一个`run-page`，这个分支就是我们后面要用来生成我们到静态页面的。
+
+#### 托管到Netlify
+
+我们先到[Netlify](<https://www.netlify.com/>)官网注册一下账号，因为我们是将项目托管到GitHub的，所以我们选择GitHub登录：
+
+![QQ20190425-002152@2x.png](https://i.loli.net/2019/04/25/5cc08d58a4e22.png)
+
+进入官网，点击新建：
+
+![QQ20190425-002343@2x.png](https://i.loli.net/2019/04/25/5cc08f8a6b0d1.png)
+
+选择GitHub来源：
+
+![QQ20190425-002408@2x.png](https://i.loli.net/2019/04/25/5cc08f8e877c0.png)
+
+然后选择我们刚刚新建的项目：
+
+![QQ20190425-002857@2x.png](https://i.loli.net/2019/04/25/5cc08f8f64abc.png)
+
+进入一步进行配置：
+
+![QQ20190425-003120@2x.png](https://i.loli.net/2019/04/25/5cc08f8f8c841.png)
+
+
+
+接着等待一会儿，Netlify会自动帮我们生成网址：
+
+![QQ20190425-003723@2x.png](https://i.loli.net/2019/04/25/5cc090e2f0713.png)
+
+第一次新建的时候，它会随机生成一个Netlify的二级域名，我们可以进行自定义二级域名，点击"Change site name"即可进行设置，像这样：
+
+![QQ20190425-004139@2x.png](https://i.loli.net/2019/04/25/5cc091d29a563.png)
+
+点击Save,等待Netlify进行热部署即可。
+
+然后点击创建好的二级域名，成功访问✌️！！！
+
+以后我们写好博客之后，直接执行：
+
+```
+$ hexo clean 
+$ hexo g     
+$ hexo d
+```
+
+我们的个人博客就会自动进行刷新，是不是超厉害！！
+
+### 思路
+
+ 部署完成之后，到这里，可能有的同学会觉得很晕，我画了一个部署的流程图：
 

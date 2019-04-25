@@ -1,5 +1,6 @@
 .DS_Store
 Thumbs.db
+themes/
 db.json
 *.log
 node_modules/

@@ -5,8 +5,8 @@ tags:
   - GitHub
 ---
 ### 将你的项目同步至github
- 注：此操作满足在你本机git已经配置到github环境下进行操作.
-  先在项目根目录下：
+注：此操作满足在你本机git已经配置到github环境下进行操作.
+ 先在项目根目录下：
 
   ```git
   git init
