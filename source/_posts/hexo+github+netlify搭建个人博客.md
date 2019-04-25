@@ -24,7 +24,7 @@ tags:
 - 可以将静态网站部署到CDN上
 - Continuous Deployment 持续部署,当你提交改变到git 仓库,它就会自动运行build command,进行自动部署
 - 可以添加自定义域名
-- 重头戏：**可以启用免费的TLS证书,启用HTTPS**
+- **可以启用免费的TLS证书,启用HTTPS**
 
 Oh my God!!,这可比Git pages好太多了👏我们来对比一下Github pages：
 
@@ -270,4 +270,37 @@ $ hexo d
 
 进行我们博客的推送,一旦我们推送到`run-page`分支,Netlify监测到我们的仓库发生了变化,就会根据这个分支的变化进行实时拉取并部署.
 
-怎么样,你有没有学会呢？
+### 绑定自己的域名
+
+ 在Netlify官网的这个项目下,进入Domain Settings进行设置:
+
+![QQ20190425-160540@2x.png](https://i.loli.net/2019/04/25/5cc16a5d12a0c.png)
+
+设置之后,它会提醒什么去设置域名解析.我的域名提供商是阿里云,所以我去阿里云进行解析记录:
+
+![QQ20190425-161110@2x.png](https://i.loli.net/2019/04/25/5cc16bad6d20c.png)
+
+设置两条记录,将记录值写入为netlify为你提供的二级域名,返回netlify查看结果:
+
+![QQ20190425-161356@2x.png](https://i.loli.net/2019/04/25/5cc16c4ea4cf6.png)
+
+成功显示你绑定的域名,此时已经可以通过你的自定义域名访问你的博客了.
+
+### 设置Https证书
+
+我们可以选择netlify为我们自动生成的证书,它会帮你去Let’s Encrypt申请免费的证书,我们也可以用我们自己的证书,我用的是阿里云的免费证书,先下载Apache的证书:
+
+![QQ20190425-162743@2x.png](https://i.loli.net/2019/04/25/5cc16f8a5d8dd.png)
+
+然后到Netlify的Domain Settings进行设置:
+
+![QQ20190425-163740@2x.png](https://i.loli.net/2019/04/25/5cc171e01b6af.png)
+
+点击安装证书,然后等待结果.
+
+![QQ20190425-165334@2x.png](https://i.loli.net/2019/04/25/5cc175a14f2e8.png)
+
+大功告成(〃’▽’〃)！！再次访问网站,浏览器已经讲我们的网站标记为安全.
+
+怎么样,你学会了吗,赶紧操作起来吧!!!
+

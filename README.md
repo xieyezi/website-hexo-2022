@@ -2,7 +2,7 @@
 
 
 
-[预览地址](<https://xieyezi.netlify.com/>)
+[预览地址](https://xieyezi.xyz/)
 
 ###  构建工具🔨
 
