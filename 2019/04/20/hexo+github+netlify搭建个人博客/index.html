@@ -74,7 +74,7 @@
 	
 		<i class="iconfont icon-words"></i>
 		<span>
-			3739
+			3717
 		</span>
 	
 </div>
@@ -118,7 +118,7 @@
 <li><a href="http://nodejs.org/" target="_blank" rel="noopener">Node.js</a></li>
 <li><a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a></li>
 </ul>
-<p>安装完node后由于npm是自带的,可能版本有些落后,需要先将自身升级一下.</p>
+<p>安装完node后安装npm:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm -g install npm</span><br></pre></td></tr></table></figure>
 <p>不能翻墙的同学,可使用npm淘宝镜像cnpm:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g cnpm --registry=https:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure>
@@ -130,7 +130,7 @@
 <p>测试一下是否安装成功：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br></pre></td></tr></table></figure>
 <p>然后在我们的电脑上,选择一个目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &quot;博客目录&quot; #使用hexo命令在指定的&lt;folder&gt;文件夹下初始化创建一个博客项目</span><br><span class="line">$ cd &lt;folder&gt;         #进入创建好的项目目录</span><br><span class="line">$ npm install         #使用npm安装所需依赖.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &quot;博客目录&quot; #使用hexo命令在指定的&lt;folder&gt;文件夹下初始化创建一个博客项目</span><br><span class="line">$ cd &quot;博客目录&quot;         #进入创建好的项目目录</span><br><span class="line">$ npm install         #使用npm安装所需依赖.</span><br></pre></td></tr></table></figure>
 <p>这个新建的”博客目录”就是用来作为你以后存放博客的目录,这其中包括博客的配置、文章等等的一切.新建完成之后,我们用任何一个代码编辑器打开我们刚刚新建的目录,有如下目录结构：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -294,7 +294,10 @@
 
       </div>  
     <nav class="pf-paginator">
-           
+      
+         
+          <a href="/2019/05/28/删除github项目中指定目录或文件/" data-hover="删除github项目中指定的目录和文件">上一篇</a>      
+            
         
       
         
