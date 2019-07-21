@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   
   
-  <title>  删除Github项目中指定的目录和文件 |   写夜子的个人博客 </title>
+  <title>  Windows搭建最完美的VScode开发平台 |   写夜子的个人博客 </title>
 
  
   
@@ -61,20 +61,20 @@
 	<div class="post-header">
 
 	<p class="post-title">	
-		删除github项目中指定的目录和文件
+		Windows搭建最完美的VScode开发平台
 	</p>
 			
 
 	<div class="meta-info">	
 	<span>
-		5月 28, 2019
+		7月 21, 2019
 	</span>
 
 	
 	
 		<i class="iconfont icon-words"></i>
 		<span>
-			306
+			547
 		</span>
 	
 </div>
@@ -87,23 +87,29 @@
 		
 
 			
-					<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  有时候我们将项目托管至github之后才发现,我们可能需要删除部分指定的目录或者文件,但是直接在<code>.gitignore</code>文件标注说明,推送到github之后,你会发现想要删除的目录仍然没有删除,所以此时我们需要使用git命令来进行删除.<a id="more"></a></p>
-<h3 id="删除指定目录或文件"><a href="#删除指定目录或文件" class="headerlink" title="删除指定目录或文件"></a>删除指定目录或文件</h3><ol>
-<li>先删除本地的git缓存</li>
+					<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>  公司的电脑是Windows电脑,且显示器的分辨率只有1080P,在使用vscode写代码的过程中,眼睛简直要瞎了,跟Mac对比起来,太过于模糊.于是开始了一番折腾,包括字体、文件图标、主题等等一系列的设置.</p>
+<h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p>   主题我经过千挑万选,最终选定了One Dark Pro Vivid,安装请直接在vscode扩展里面搜索即可.<a id="more"></a></p>
+<h3 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h3><p>   图标选择了Meterial Icon Theme,安装在vscode扩展里面也能直接搜索.</p>
+<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>   写代码时,我们得一直面对着电脑屏幕,所以字体的显示很重要.默认字体配上1080P,简直要瞎眼.<br>   我千挑万选,选了两款字体：<a href="https://github.com/tonsky/FiraCode" target="_blank" rel="noopener">FiraCode</a>和<a href="https://www.typography.com/blog/introducing-operator?source=post_page---------------------------" target="_blank" rel="noopener">Operator Mono</a>.</p>
+<p>   字体预览：</p>
+<p>   FiraCode：</p>
+<p>   <img src="https://i.loli.net/2019/07/18/5d304e1e977ca96618.png" alt="TIM图片20190718184622.png"></p>
+<p>   Operator Mono：<br>   <img src="https://i.loli.net/2019/07/18/5d304e1e8772b67232.png" alt="TIM图片20190718184539.png"></p>
+<p>   其中Operator Mono为付费字体,但是我已经将其下载好了,直接clone项目,解压安装即可.</p>
+<p>   安装方法：</p>
+<ol>
+<li>先colone项目,找到压缩包,解压：</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/07/18/5d3050b5ea1a552809.png" alt="TIM图片20190718185740.png"></p>
 <ol start="2">
-<li><p>在.gitignore中加入需要忽略的文件夹或文件</p>
-</li>
-<li><p>重新提交</p>
+<li>打开解压之后的安装包,全选,点击为所有用户安装:</li>
+</ol>
+<p><img src="https://i.loli.net/2019/07/18/5d304c084cd1d29005.png" alt="TIM图片20190718183729.png"></p>
+<ol start="3">
+<li><p>到vscode里面进行设置font-family即可,也可以直接复制我的setting.json文件里的内容到你的setting.json文件里面,我已经将字体的粗细、行高都调整好了.</p>
+<p>重启Vscode,即可成功应用字体.</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add -A</span><br><span class="line">git commit -m &quot;remove files&quot;</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>推送到GitHub</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-<p>到Github查看,大功告成！</p>
   	
 					
 	  </div>     
@@ -115,7 +121,7 @@
 
       
         <i class="iconfont icon-tag"></i>     
-          <a class="tag-link" href="/tags/GitHub/">GitHub</a> <a class="tag-link" href="/tags/git/">git</a>    
+          <a class="tag-link" href="/tags/VScode/">VScode</a> <a class="tag-link" href="/tags/Windows/">Windows</a>    
       	
 </div>
 
@@ -146,8 +152,8 @@
 	<span class="donate-cancel iconfont icon-cancel"></span>
 
 	<div class="donate-img-box">
-		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
-		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate1.png">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img lazyload" src="/images/placeholder.png" alt="No Donate Image!" data-src="/images/donate2.png">	
 	</div>
 
 	<span class="donate-word">世界美好 你也是</span>
@@ -189,14 +195,11 @@
 
       </div>  
     <nav class="pf-paginator">
-      
-         
-          <a href="/2019/07/21/WIndows搭建最完美的VS code开发平台/" data-hover="Windows搭建最完美的VScode开发平台">上一篇</a>      
-            
+           
         
       
         
-        <a href="/2019/04/20/hexo+github+netlify搭建个人博客/" data-hover="Hexo+Github+Netlify搭建个人博客"> 下一篇</a>
+        <a href="/2019/05/28/删除github项目中指定目录或文件/" data-hover="删除github项目中指定的目录和文件"> 下一篇</a>
             
   </nav>   
   </div>
@@ -248,7 +251,7 @@
      <div class="mobile-menu">      
 
       
-      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      <img class="mobile-menu-icon lazyload" src="/images/placeholder.png" data-src="/images/favicon.png">   
       
 
          
