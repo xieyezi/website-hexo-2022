@@ -102,6 +102,49 @@
 
 	<div class="article-header">
 
+		<a class="article-title" href="/2018/11/06/nginx给tomcat配置反向代理/">nginx给tomcat配置反向代理</a>
+
+		 
+
+		<div class="article-meta">
+			<time>11月 06, 2018</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>   可以利用nginx作为分发服务器,给tomcat下面的项目做代理.</p>
+<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><p>  在nginx根目录下面的conf文件夹下,打开nginx.conf进行编辑(在http内添加如下内容):<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 设置tomcat代理</span><br><span class="line"> upstream tomcat &#123;</span><br><span class="line">       server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8080</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> server &#123;</span><br><span class="line">     listen <span class="number">80</span>;</span><br><span class="line">     server_name www.xieyezi.com;</span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_set_header        Host $host;</span><br><span class="line">         proxy_set_header        X-Real-IP $remote_addr;</span><br><span class="line">         proxy_pass http:<span class="comment">//tomcat;</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2018/11/06/nginx给tomcat配置反向代理/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
 		<a class="article-title" href="/2018/11/06/nginx解决vue生产环境的跨域问题/">nginx解决vue项目在生产环境的跨域问题</a>
 
 		 
@@ -475,53 +518,6 @@
 
 	<div class="article-bottom">
 		<a class="article-readmore" href="/2018/09/28/Vue组件库iView的使用/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2018/09/26/搭建Vue开发环境/">Vue开发环境的搭建</a>
-
-		 
-
-		<div class="article-meta">
-			<time>9月 26, 2018</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/JS/">JS</a>
-				
-						<a class="article-tag" href="/tags/Vue/">Vue</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  学了Vue也算是有段时间了,我看了一下自己的博客记录,居然没有一篇写如何搭建Vue开发环境的,于是才有了这篇博文.现在前端的开发更趋向于工程化、模块化,所以使用Vue-Cli是非常必要的.基本来说,要将Vue项目跑起来,要用到以下工具:</p>
-<ul>
-<li>Node.js</li>
-<li>npm</li>
-<li>webpack</li>
-<li>Vue-Cli
-		
-	</li></ul></div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2018/09/26/搭建Vue开发环境/">阅读更多</a>
 	</div>
 
 </article>

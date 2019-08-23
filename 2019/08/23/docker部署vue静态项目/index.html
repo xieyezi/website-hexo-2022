@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  
+  <title>  Docker部署vue静态项目 |   写夜子的个人博客 </title>
+
+ 
+  
+    <link rel="icon" href="/images/favicon.png">
+  
+
+
+  <link rel="stylesheet" href="/nayo.min.css"> 
+</head>  
+  <body>   
+    
+      <header class="header">
+	
+  <nav class="header-nav">        
+   
+    <span class="iconfont icon-menu mobile-toggle"></span>   	
+
+    <div class="header-menu">          
+              
+            
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+            
+            
+            
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+            
+            
+            
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+            
+                
+    </div>  
+    
+  </nav>
+</header>   
+
+      <div class="container">       
+          
+          
+            <section class="main">  
+          
+
+          <article class="post">
+  
+	<div class="post-header">
+
+	<p class="post-title">	
+		docker部署vue静态项目
+	</p>
+			
+
+	<div class="meta-info">	
+	<span>
+		8月 23, 2019
+	</span>
+
+	
+	
+		<i class="iconfont icon-words"></i>
+		<span>
+			2008
+		</span>
+	
+</div>
+
+</div> 
+	 
+
+	  <div class="post-content slideDownMin">
+
+		
+
+			
+					<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>   我在网上搜索了很多docker部署vue项目的教程，其中很多的文章不乏都是先将vue项目执行<code>npm run build</code> 在本地进行打包，传到自己的仓库去，然后到服务器去拉取我们的代码，获取<code>dist</code>文件，再将该文件挂载到dockr容器内。其实这种操作应当是有缺陷的，我们应当把打包的操作也放到docker的镜像里面去操作。<br>   <a id="more"></a></p>
+<h2 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h2><p>  在项目根目录下面新建<code>Dockerfile</code>文件:<br>  <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># resum Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#指定node镜像对项目进行依赖安装和打包</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">10.16</span>.<span class="number">0</span> AS builder</span><br><span class="line"><span class="comment"># 将容器的工作目录设置为/app(当前目录，如果/app不存在，WORKDIR会创建/app文件夹)</span></span><br><span class="line"><span class="keyword">WORKDIR</span> /app </span><br><span class="line"><span class="keyword">COPY</span> package.json /app/ </span><br><span class="line"><span class="keyword">RUN</span> npm config set registry "https://registry.npm.taobao.org/" \</span><br><span class="line">    &amp;&amp; npm install</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span> . /app   </span><br><span class="line"><span class="keyword">RUN</span> npm run build </span><br><span class="line"></span><br><span class="line"><span class="comment">#指定nginx配置项目，--from=builder 指的是从上一次 build 的结果中提取了编译结果(FROM node:alpine as builder)，即是把刚刚打包生成的dist放进nginx中</span></span><br><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="keyword">COPY</span> --from=builder app/dist /usr/share/nginx/html/</span><br><span class="line"><span class="keyword">COPY</span> --from=builder app/nginx.conf /etc/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">#暴露容器80端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br></pre></td></tr></table></figure></p>
+<p>  可以看到，在这里我将打包操作也放到<code>Dokcerfile</code>里面进行操作了。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COPY --from=builder app/dist /usr/share/nginx/html/</span><br></pre></td></tr></table></figure></p>
+<p>  该条命令是将我们在镜像里面打包生成的<code>dist</code>文件放进容器内<code>nginx</code>的web目录下面。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COPY --from=builder app/nginx.conf /etc/nginx/</span><br></pre></td></tr></table></figure></p>
+<p>  该条命令是将我们项目目录下面的<code>nginx.conf</code>文件复制到容器内<code>nginx</code>的配置文件的目录下面，从而覆盖原有的配置文件。<br>  <code>nginx.conf</code>:<br>   <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#user  nobody;</span></span><br><span class="line"><span class="attribute">worker_processes</span>  <span class="number">1</span>;</span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_min_length</span>  <span class="number">5k</span>;</span><br><span class="line">    <span class="attribute">gzip_buffers</span>     <span class="number">4</span> <span class="number">16k</span>;</span><br><span class="line">    <span class="comment">#gzip_http_version 1.0;</span></span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">3</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line">    <span class="attribute">gzip_vary</span> <span class="literal">on</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 设置简历项目</span></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span>  <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span> www.xieyezi.com;</span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            <span class="attribute">root</span> /usr/share/nginx/html;   <span class="comment">#站点目录</span></span><br><span class="line">            <span class="attribute">index</span> index.html index.htm;   <span class="comment">#添加属性。 </span></span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="attribute">location</span> = /50x.html &#123;</span><br><span class="line">            <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  进入自己的服务器(我的服务器为ubuntu 18.04)，在根目录下面创建一个<code>web</code>目录。接着进入该目录，利用git拉取我们的项目代码到该目录。</p>
+<ol>
+<li>clone自己的项目: <code>git clone xxxx</code>;</li>
+<li><p>在项目的根目录下，新建一个文本文件:<code>.dockerignore</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.git</span><br><span class="line">node_modules</span><br><span class="line">npm-debug.log</span><br></pre></td></tr></table></figure>
+<p>该文件会排除以上的三个路径下的文件，告诉docker不要将这三个打包到image文件。  </p>
+</li>
+<li><p>制作镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image build -t [imageName]:1.0 .</span><br></pre></td></tr></table></figure>
+<p>制作镜像之后,我们即可根据容器运行我们的镜像:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8080:80 -d --name [containerName] [iamgeName]</span><br></pre></td></tr></table></figure>
+<p>接着在控制台输入<code>docker ps</code>命令即可看见我们刚刚启动的容器信息。<br>接着输入域名进行测试，正常运行。</p>
+</li>
+</ol>
+  	
+					
+	  </div>     
+	  
+
+	
+<div class="post-meta">
+      	
+
+      
+        <i class="iconfont icon-tag"></i>     
+          <a class="tag-link" href="/tags/docker/">docker</a>    
+      	
+</div>
+
+
+
+
+
+<div class="post-footer">
+  <div class="pf-left">
+      <img class="pf-avatar" src="https://i.loli.net/2019/04/25/5cc1786ceef93.png">
+      <p class="pf-des">hi,我是写夜子,希望你有愉快的一天.</p>
+  </div>
+
+  <div class="pf-right">           
+      <div class="pf-links">
+        
+
+
+
+
+<span class="donate-btn">
+	<span class="iconfont icon-donate"></span>
+</span>
+
+
+<div id="donate-box" class="sildeUpMin">
+
+	<span class="donate-cancel iconfont icon-cancel"></span>
+
+	<div class="donate-img-box">
+		<img id="donate-qr-wechat" class="noLazyLoad donate-img" src="/images/donate1.png" alt="No Donate Image!">	
+		<img id="donate-qr-alipay" class="noLazyLoad donate-img" src="/images/donate2.png" alt="No Donate Image!">	
+	</div>
+
+	<span class="donate-word">世界美好 你也是</span>
+
+	<div class="donate-list">
+		<span class="iconfont icon-donate-wechat"></span>
+		<span class="iconfont icon-donate-alipay"></span>
+	</div>
+
+</div>
+
+ 
+        
+	
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=21d601593a1de"></script>
+	
+	<span class="share-btn">
+	<span class="iconfont icon-share"></span>
+	</span>
+
+
+	<div class="-mob-share sildeUpMin">
+		   			             
+            <a class="iconfont  icon-share-qq -mob-share-qq"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weixin -mob-share-weixin"></a>		
+     	   			             
+            <a class="iconfont  icon-share-weibo -mob-share-weibo"></a>		
+     	   			             
+            <a class="iconfont  icon-share-douban -mob-share-douban"></a>		
+     	   			             
+            <a class="iconfont  icon-share-facebook -mob-share-facebook"></a>		
+     	   			             
+            <a class="iconfont  icon-share-twitter -mob-share-twitter"></a>		
+     	   			             
+            <a class="iconfont  icon-share-google -mob-share-google"></a>		
+     	   
+	</div>	
+
+      </div>  
+    <nav class="pf-paginator">
+           
+        
+      
+        
+        <a href="/2019/08/23/docker-compose基本知识/" data-hover="docker-compose基本知识"> 下一篇</a>
+            
+  </nav>   
+  </div>
+</div> 
+	
+
+
+    <div id="comment">   
+    </div>
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+
+    <script src="//unpkg.com/valine@v1.1.8-beta/dist/Valine.min.js"></script>
+
+    <script>
+        new Valine({
+        el: '#comment',
+        notify:false, 
+        verify:false, 
+        app_id: 'cFM0eCo0CQ9xmBXmHi1eltol-gzGzoHsz',
+        app_key: 'oh9tizsnvV2vNvWgqEvoNtQO',  
+        path:window.location.pathname, 
+        avatar:'mm' ,
+        guest_info:['nick','mail']
+        });
+    </script>
+	
+</article>
+
+          </section> 
+      </div>            
+    
+    <a id="backTop">
+      <span>
+        <i class="iconfont icon-backtotop"></i>
+      </span>
+    </a> 
+
+  
+    
+    <div class="search-container sildeUpMin">
+        <div class="search-header">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+            <span class="search-cancel iconfont icon-cancel"></span>
+        </div>
+        <div id="search-result" class="search-result"></div>
+    </div>
+ 
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon" src="/images/favicon.png">   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+      
+</div>        
+    
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+     
+    
+
+
+
+
+<footer id="footer">
+
+
+		<div class="footer-copyright">
+		&copy;
+		
+		2018-
+		
+		2019
+
+		Xieyezi
+		<br>
+
+		Copyright
+		<a href="http://www.xieyezi.com/" target="_blank">Xieyezi</a>
+		</div>
+
+</footer>
+   
+
+  
+
+    <script src="/nayo.bundle.js"></script>           
+  </body>        
+</html>

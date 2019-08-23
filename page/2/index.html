@@ -102,6 +102,54 @@
 
 	<div class="article-header">
 
+		<a class="article-title" href="/2019/03/28/记一次开发自己的NPM包的经历/">记一次自己封装NPM包的经历</a>
+
+		 
+
+		<div class="article-meta">
+			<time>3月 28, 2019</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/npm/">npm</a>
+				
+						<a class="article-tag" href="/tags/rollup/">rollup</a>
+				
+						<a class="article-tag" href="/tags/webpack/">webpack</a>
+				
+						<a class="article-tag" href="/tags/localStorage/">localStorage</a>
+				
+						<a class="article-tag" href="/tags/sessionStorage/">sessionStorage</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>最近一直在忙自己的毕业设计,在做的过程中,有的地方要用到缓存.我采用了localStorage和sessionStorage的方式进行的缓存,并完整地实现了自己想要的功能.但是我突然想到前端的”模块化开发”,这块完全可以独立出来,将其封装为一个统一的API,想要使用的时候就引入使用,于是我将其封装为了一个将localStorage和sessionStorage统一在一起的功能函数:<code>xieyezi-storage.js</code>.我存放在自己的电脑里面,以便我自己以后使用,但是我突然想到了程序员的”开源精神”😹,好吧其实是想到,每次我们需要安装一个包的时候,我们都是采用<code>npm install xxx</code>的方式进行引入,然后在使用的时候,就通过<code>import xxx from xxx</code> 这样的方式进行使用.于是我也想要将我的功能函数封装为一个npm包,并且发布到<a href="https://www.npmjs.com/" target="_blank" rel="noopener">npm</a>👆上面去,那也算是为我们开源作出了一定的贡献.
+		
+	</p></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2019/03/28/记一次开发自己的NPM包的经历/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
 		<a class="article-title" href="/2019/03/26/将本地项目同步至github/">将本地项目同步至github</a>
 
 		 
@@ -475,49 +523,6 @@
 
 	<div class="article-bottom">
 		<a class="article-readmore" href="/2018/11/15/promise的连续调用问题/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2018/11/06/nginx给tomcat配置反向代理/">nginx给tomcat配置反向代理</a>
-
-		 
-
-		<div class="article-meta">
-			<time>11月 06, 2018</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/JS/">JS</a>
-				
-						<a class="article-tag" href="/tags/Vue/">Vue</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>   可以利用nginx作为分发服务器,给tomcat下面的项目做代理.</p>
-<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><p>  在nginx根目录下面的conf文件夹下,打开nginx.conf进行编辑(在http内添加如下内容):<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 设置tomcat代理</span><br><span class="line"> upstream tomcat &#123;</span><br><span class="line">       server <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8080</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> server &#123;</span><br><span class="line">     listen <span class="number">80</span>;</span><br><span class="line">     server_name www.xieyezi.com;</span><br><span class="line">     location / &#123;</span><br><span class="line">         proxy_set_header        Host $host;</span><br><span class="line">         proxy_set_header        X-Real-IP $remote_addr;</span><br><span class="line">         proxy_pass http:<span class="comment">//tomcat;</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-		
-	</div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2018/11/06/nginx给tomcat配置反向代理/">阅读更多</a>
 	</div>
 
 </article>
