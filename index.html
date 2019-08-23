@@ -102,6 +102,148 @@
 
 	<div class="article-header">
 
+		<a class="article-title" href="/2019/08/23/docker-compose基本知识/">docker-compose基本知识</a>
+
+		 
+
+		<div class="article-meta">
+			<time>8月 23, 2019</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/docker/">docker</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h1 id="docker-compose-yml-文件的编写"><a href="#docker-compose-yml-文件的编写" class="headerlink" title="docker-compose.yml 文件的编写"></a>docker-compose.yml 文件的编写</h1><h3 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h3><p>  我们知道使用一个 Dockerfile 模板文件，可以让用户很方便的定义一个单独的应用容器。然而，在日常工作中，经常会碰到需要多个容器相互配合来完成某项任务的情况。例如要实现一个 Web 项目，除了 Web 服务容器本身，往往还需要再加上后端的数据库服务容器，甚至还包括负载均衡容器等。<code>docker-compose</code>就可以做到这一点。</p>
+<h3 id="Compose的两个重要概念"><a href="#Compose的两个重要概念" class="headerlink" title="Compose的两个重要概念"></a>Compose的两个重要概念</h3><ol>
+<li>服务(service): 一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。</li>
+<li>项目(project): 由一组关联的应用容器组成的一个完整业务单元，在<code>docker-compose.yml</code>文件中定义。<br><code>Compose</code> 的默认管理对象是项目，通过子命令对项目中的一组容器进行便捷地生命周期管理。</li>
+</ol>
+<p>  可见一个项目可以由多个服务（容器）关联而成，Compose 面向项目进行管理。</p>
+
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2019/08/23/docker-compose基本知识/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2019/08/23/Dockerfile文件编写/">Dockerfile文件编写</a>
+
+		 
+
+		<div class="article-meta">
+			<time>8月 23, 2019</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/docker/">docker</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h1 id="Dockerfile文件的编写"><a href="#Dockerfile文件的编写" class="headerlink" title="Dockerfile文件的编写"></a>Dockerfile文件的编写</h1><p> <code>FROM</code> : 指定基础镜像 (可以到<a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>上面去寻找想要的镜像)<br> <code>RUN</code>  : 执行命令，有两种模式: </p>
+<ol>
+<li>shell 格式：<code>RUN &lt;命令&gt;</code>，就像直接在命令行中输入的命令一样;例如 <code>rm -rf xxx</code>,<code>npm install</code>等等;</li>
+<li><p>exec 格式：<code>RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</code>，这更像是函数调用中的格式。</p>
+<blockquote>
+<p>为了保持 Dockerfile 文件的可读性，可理解性，以及可维护性，建议将长的或复杂的 RUN 指令用反斜杠 \ 分割成多行,例如:</p>
+</blockquote>
+		
+	</li></ol></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2019/08/23/Dockerfile文件编写/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
+		<a class="article-title" href="/2019/08/23/docker基本知识/">docker基本知识</a>
+
+		 
+
+		<div class="article-meta">
+			<time>8月 23, 2019</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/docker/">docker</a>
+				
+						<a class="article-tag" href="/tags/nginx/">nginx</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h1 id="docker学习笔记"><a href="#docker学习笔记" class="headerlink" title="docker学习笔记"></a>docker学习笔记</h1><p>  以下为docker的学习笔记。</p>
+<h3 id="镜像-image-文件"><a href="#镜像-image-文件" class="headerlink" title="镜像(image)文件"></a>镜像(image)文件</h3><ol>
+<li>docker把应用程序及其依赖，打包在image文件里面</li>
+<li>image文件可以看做是容器的模板，docker根据image文件生成容器的实例</li>
+<li>同一个image文件，可以生成多个同时运行的模板</li>
+<li><code>docker image pull</code> 是抓取image文件的命令 (eg: <code>docker image pull hello-world</code>)</li>
+<li>使用<code>docker image ls</code>查看本机下面的已有的docker image文件</li>
+<li>运行image文件:<code>docker container run hello-world</code>,该命令会从image文件，生成一个正在运行的容器实例</li>
+<li>终止正在运行的容器: <code>docker container kill [containID]</code>
+		
+	</li></ol></div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2019/08/23/docker基本知识/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
 		<a class="article-title" href="/2019/08/13/import 和 require 的区别/">import 和 require 的区别</a>
 
 		 
@@ -392,134 +534,6 @@
 
 	<div class="article-bottom">
 		<a class="article-readmore" href="/2019/03/28/记一次开发自己的NPM包的经历/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2019/03/26/将本地项目同步至github/">将本地项目同步至github</a>
-
-		 
-
-		<div class="article-meta">
-			<time>3月 26, 2019</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/git/">git</a>
-				
-						<a class="article-tag" href="/tags/GitHub/">GitHub</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h3 id="将你的项目同步至github"><a href="#将你的项目同步至github" class="headerlink" title="将你的项目同步至github"></a>将你的项目同步至github</h3><p>注：此操作满足在你本机git已经配置到github环境下进行操作.<br> 先在项目根目录下：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-<p>  打开你的github首页,新建一个repository.<br>  复制你刚刚新建的repository的地址,像这样:
-		
-	</p></div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2019/03/26/将本地项目同步至github/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2019/03/14/git基本知识/">git基本知识</a>
-
-		 
-
-		<div class="article-meta">
-			<time>3月 14, 2019</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/git/">git</a>
-				
-						<a class="article-tag" href="/tags/GitHub/">GitHub</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h2 id="Git是什么？"><a href="#Git是什么？" class="headerlink" title="Git是什么？"></a>Git是什么？</h2><p>  Git 是一个开源的分布式版本控制系统.</p>
-<h2 id="什么是版本控制？"><a href="#什么是版本控制？" class="headerlink" title="什么是版本控制？"></a>什么是版本控制？</h2><p>  版本控制是一种记录一个或若干文件内容变化,以便将来查阅特定版本修订情况的系统.</p>
-<h3 id="集中化的版本控制系统和分布式版本控制系统"><a href="#集中化的版本控制系统和分布式版本控制系统" class="headerlink" title="集中化的版本控制系统和分布式版本控制系统"></a>集中化的版本控制系统和分布式版本控制系统</h3><p> 集中化的版本控制系统,都有一个单一的集中管理的服务器,保存所有文件的修订版本,而协同工作的人们都通过客户端连到这台服务器,取出最新的文件或者提交更新.也就是说,
-		
-	</p></div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2019/03/14/git基本知识/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2019/03/03/解决移动端300ms延迟点击的问题/">解决移动端300ms延迟的问题</a>
-
-		 
-
-		<div class="article-meta">
-			<time>3月 03, 2019</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/Vue/">Vue</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h3 id="移动端300ms延迟"><a href="#移动端300ms延迟" class="headerlink" title="移动端300ms延迟"></a>移动端300ms延迟</h3><p>  移动端浏览器click事件为什么会有300ms的延迟呢？因为在手机上有个双击方案：在手机上快速点击两下，实现页面放大；再次双击，恢复到原始比例。<br>  那它是如何实现的呢？浏览器在捕捉到第一次点击事件后，会等待一段时间，如果在这段时间内，用户没有再次进行点击操作的话，就执行单击事件；如果用户进行了第二次点击操作的话，就会执行双击事件。这段等待的时间大约300ms。
-		
-	</p></div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2019/03/03/解决移动端300ms延迟点击的问题/">阅读更多</a>
 	</div>
 
 </article>
