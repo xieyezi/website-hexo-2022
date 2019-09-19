@@ -102,6 +102,48 @@
 
 	<div class="article-header">
 
+		<a class="article-title" href="/2019/09/19/vue-amap的bug -Cannot read property 'Ac' of null/">vue-amap的bug -Cannot read property &#39;Ac&#39; of null</a>
+
+		 
+
+		<div class="article-meta">
+			<time>9月 19, 2019</time>
+			
+				<span class="iconfont icon-star"></span>
+				
+						<a class="article-tag" href="/tags/JS/">JS</a>
+				
+						<a class="article-tag" href="/tags/Vue/">Vue</a>
+				
+			
+		</div>
+	</div>
+
+
+	
+
+
+	<div class="article-excerpt">
+		
+			<h2 id="问题产生的场景"><a href="#问题产生的场景" class="headerlink" title="问题产生的场景"></a>问题产生的场景</h2><p>  我们在项目中引入了<code>vue-amap</code>组件，我在每个标记点上绑定了点击事件，如下:<br>  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> markerAlarm = &#123;</span><br><span class="line">        position: [lon, lat],</span><br><span class="line">        visible: <span class="literal">true</span>,</span><br><span class="line">        draggable: <span class="literal">false</span>,</span><br><span class="line">        name: name,</span><br><span class="line">        animation: <span class="string">"AMAP_ANIMATION_BOUNCE"</span>, <span class="comment">// 标记点动画效果</span></span><br><span class="line">        icon: <span class="string">"/images/alarm.png"</span>,</span><br><span class="line">        events: &#123;</span><br><span class="line">            init(o) &#123;</span><br><span class="line">                self.markerRefs.push(o);</span><br><span class="line">            &#125;,</span><br><span class="line">            click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                self.windows = &#123;</span><br><span class="line">                    enterprise_id: data[i].enterprise_id,</span><br><span class="line">                    position: [lon, lat],</span><br><span class="line">                    content: name,</span><br><span class="line">                    visible: <span class="literal">true</span>,</span><br><span class="line">                    size: <span class="number">100</span>,</span><br><span class="line">                    events: &#123;</span><br><span class="line">                        close: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                            self.windows.visible = <span class="literal">false</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">                <span class="keyword">let</span> crumbArray = [</span><br><span class="line">                    &#123;</span><br><span class="line">                        url: <span class="string">"/move"</span>,</span><br><span class="line">                        name: <span class="string">"移动执法"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    &#123;</span><br><span class="line">                        url: <span class="string">""</span>,</span><br><span class="line">                        name: <span class="string">"企业详情"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                ];</span><br><span class="line">                self.$router.push(&#123;</span><br><span class="line">                    name: <span class="string">"enterpriseDetail"</span>,</span><br><span class="line">                    query: &#123;</span><br><span class="line">                        enterpriseId: self.windows.enterprise_id,</span><br><span class="line">                        crumbArray: crumbArray</span><br><span class="line">                    &#125;                                      </span><br><span class="line">                &#125;);</span><br><span class="line">                <span class="built_in">console</span>.log(self.windows, <span class="string">"231423"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure></p>
+		
+	</div>
+
+	<div class="article-bottom">
+		<a class="article-readmore" href="/2019/09/19/vue-amap的bug -Cannot read property 'Ac' of null/">阅读更多</a>
+	</div>
+
+</article>
+     
+     	
+    	  	
+  		
+    			
+
+<article class="article">
+
+	<div class="article-header">
+
 		<a class="article-title" href="/2019/08/23/docker部署vue静态项目/">docker部署vue静态项目</a>
 
 		 
@@ -439,50 +481,6 @@
 
 	<div class="article-bottom">
 		<a class="article-readmore" href="/2019/05/28/删除github项目中指定目录或文件/">阅读更多</a>
-	</div>
-
-</article>
-     
-     	
-    	  	
-  		
-    			
-
-<article class="article">
-
-	<div class="article-header">
-
-		<a class="article-title" href="/2019/04/20/hexo+github+netlify搭建个人博客/">Hexo+Github+Netlify搭建个人博客</a>
-
-		 
-
-		<div class="article-meta">
-			<time>4月 20, 2019</time>
-			
-				<span class="iconfont icon-star"></span>
-				
-						<a class="article-tag" href="/tags/GitHub/">GitHub</a>
-				
-						<a class="article-tag" href="/tags/Hexo/">Hexo</a>
-				
-						<a class="article-tag" href="/tags/Netlify/">Netlify</a>
-				
-			
-		</div>
-	</div>
-
-
-	
-
-
-	<div class="article-excerpt">
-		
-			<h3 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h3><p>  我的博客在曾经的很长一段时间以内,我都是将博客静态页面托管到<a href="https://pages.github.com/" target="_blank" rel="noopener">Github pages</a>进行渲染的,但是大家都知道,我们国内访问GitHub如果不挂<del>翻墙</del>的话,访问速度非常慢☹️.虽然我的博客一直以来都没有太多的访问量,但是作为一个追求极致体验的人,怎么忍受得了呢 🤟.
-		
-	</p></div>
-
-	<div class="article-bottom">
-		<a class="article-readmore" href="/2019/04/20/hexo+github+netlify搭建个人博客/">阅读更多</a>
 	</div>
 
 </article>
